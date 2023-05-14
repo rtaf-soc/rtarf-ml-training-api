@@ -11,7 +11,7 @@ from sklearn.compose import make_column_transformer
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import LabelEncoder
 
-from sharelib import maskOfficeHour,maskThreat
+from sharelib import maskOfficeHour2,maskThreat2
 ########### mflow ############
 import mlflow
 import mlflow.sklearn
@@ -30,7 +30,7 @@ logger = logging.getLogger(__name__)
 
 if __name__ == "__main__":
 
-    df = pd.read_csv("data/firewall-traffic.csv")
+    df = pd.read_json("data/firewall-traffic.json", lines=True)
 
     # print("---------- data frame ---------")
     # print(df.head())
@@ -42,11 +42,11 @@ if __name__ == "__main__":
     # print(df["@timestamp"])
     # print("---------- @timestamp ---------")
     
-    df_country = df["mt.ads_country_dst"]
+    df_country = df["ads_country_dst"]
     # print("---------- df_country ---------")
     # print(df_country)
     # print(df_country.value_counts())
-    # Name: mt.ads_country_dst, Length: 6679, dtype: object
+    # Name: ads_country_dst, Length: 6679, dtype: object
     # Thailand                       3610
     # 10.0.0.0-10.255.255.255        1489
     # United States                  1031
@@ -79,10 +79,10 @@ if __name__ == "__main__":
     # Austria                           1
     # Brazil                            1
     # Canada                            1
-    # Name: mt.ads_country_dst, dtype: int64
+    # Name: ads_country_dst, dtype: int64
     # print("---------- df_country ---------")
 
-    df_OfficeHour = maskOfficeHour(df)
+    df_OfficeHour = maskOfficeHour2(df)
     # print("---------- df_OfficeHour ---------")
     # print(df_OfficeHour['is_OfficeHour']) 
     # print(df_OfficeHour['is_OfficeHour'].value_counts()) 
@@ -91,8 +91,8 @@ if __name__ == "__main__":
     # print("---------- df_OfficeHour ---------")
 
     
-    # df['is_threat'] = pd.Series('no', index=df.index).mask(df['mt.ads_country_dst']=="Russian Federation", 'yes')    
-    df_threat = maskThreat(df)
+    # df['is_threat'] = pd.Series('no', index=df.index).mask(df['ads_country_dst']=="Russian Federation", 'yes')    
+    df_threat = maskThreat2(df)
     # print("---------- Y ---------")
     # print(df_threat['is_threat'].value_counts())    
     # # no     6667
@@ -114,7 +114,7 @@ if __name__ == "__main__":
     # print("---------- df_categories 1653 ---------")
     
 
-    # mt.ads_country_dst           is_OfficeHour
+    # ads_country_dst           is_OfficeHour
     # Thailand                     no               3610
     # 10.0.0.0-10.255.255.255      no               1489
     # United States                no               1031
@@ -149,13 +149,13 @@ if __name__ == "__main__":
     # Ireland                      no                  1
     # India                        no                  1
     # dtype: int64   
-    print("---------- df_categories ---------")
+    # print("---------- df_categories ---------")
 
     # print("---------- X_label ---------")
     # Create a LabelEncoder object and fit it to each feature in X
     # X_label = df_categories.apply(LabelEncoder().fit_transform)
     # print(X_label.value_counts())
-    # mt.ads_country_dst  is_OfficeHour
+    # ads_country_dst  is_OfficeHour
     # 29                  0                3610
     # 0                   0                1489
     # 31                  0                1031
@@ -195,7 +195,7 @@ if __name__ == "__main__":
     # print("---------- X ---------")
     # Create a OneHotEncoder object, and fit it to all of X
     enc = OneHotEncoder(handle_unknown='ignore')
-    X_transform = make_column_transformer((enc,['mt.ads_country_dst']),(enc,['is_OfficeHour']))
+    X_transform = make_column_transformer((enc,['ads_country_dst']),(enc,['is_OfficeHour']))
     X_transform.fit(df_categories)
     X = X_transform.transform(df_categories)
     # print(enc.categories)
@@ -234,7 +234,7 @@ if __name__ == "__main__":
 
     print("---------------------")
     # # Split the data into train and test set
-    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=1,train_size=0.99)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=1,train_size=0.75)
     print("X_train shape is:", X_train.shape)
     print("y_train shape is:", y_train.shape)
     print("X_test shape is:", X_test.shape)
@@ -251,13 +251,16 @@ if __name__ == "__main__":
     print("Test set accuracy = " + str(score_test))
 
     tracking_uri = os.environ["MLFLOW_TRACKING_URI"]
-    
+    # export MLFLOW_TRACKING_USERNAME=user 
+    # export MLFLOW_TRACKING_PASSWORD=pwd
+
     # experiment_id = mlflow.create_experiment("soc-ml-api2")
     experiment = mlflow.get_experiment_by_name('soc-ml-default')
     experiment_id = experiment.experiment_id
 
     with mlflow.start_run(experiment_id=experiment_id):
         mlflow.set_tracking_uri(tracking_uri)
+        
         # experiment = mlflow.get_experiment_by_name('soc-ml-api2')
         print("Artifact Location: {}".format(experiment.artifact_location))
         print("artifact uri : " + mlflow.get_artifact_uri())
@@ -281,7 +284,7 @@ if __name__ == "__main__":
     # test_df = pd.DataFrame([
     # ['Russian Federation','Feb 22, 2023 @ 17:59:59.942']
     # ])
-    # test_df.columns = ["mt.ads_country_dst","@timestamp"]
+    # test_df.columns = ["ads_country_dst","@timestamp"]
     # test_df = maskOfficeHour(test_df)
     # test_df = test_df.drop(['@timestamp'], axis=1)
     # print(test_df)
