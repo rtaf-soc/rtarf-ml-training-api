@@ -21,6 +21,7 @@
     or 
         mlflow server --host 0.0.0.0 -p 8889
         export MLFLOW_TRACKING_URI=http://127.0.0.1:8889
+        export MLFLOW_TRACKING_URI=http://mlflow.rtarf-ml.its-software-services.com/
 
 # Run mlflow
 
