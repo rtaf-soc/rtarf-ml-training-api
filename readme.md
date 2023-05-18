@@ -141,6 +141,9 @@
         ]
     }
     
+    while true;do curl -X POST -H "Content-Type:application/json"                     \
+    --data '{"country": "Russian Federation","timestamp": "2023-05-13T13:45:34Z"}'  \
+    http://127.0.0.1:6789/v2/gateway;done
 
 ## Docker Rum
 
