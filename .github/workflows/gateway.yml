@@ -2,8 +2,9 @@ name: Gateway
 
 on:
   push:
-    branches: [ 'feature/*' ]
+    branches: [ master ]
     tags: ['v*.*.*']
+
 
 env:
   GH_TOKEN: ${{ secrets.GH_TOKEN }}
