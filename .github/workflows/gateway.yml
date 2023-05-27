@@ -2,7 +2,7 @@ name: Gateway
 
 on:
   push:
-    branches: [ feature* ]
+    branches: [ 'feature/*' ]
     tags: ['v*.*.*']
 
 env:
