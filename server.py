@@ -7,7 +7,7 @@ import os
 import pandas as pd
 from sklearn.compose import make_column_transformer
 from sklearn.preprocessing import OneHotEncoder
-from sharelib import maskOfficeHour2
+from sharelib import *
 
 app = Flask(__name__)
 # host = os.environ.get('host_ml', '127.0.0.1')
@@ -22,14 +22,13 @@ def createDataV2(request_country,request_timestamp):
     
     test_df = pd.DataFrame([[request_country,request_timestamp]],columns=['ads_country_dst', '@timestamp'])
     test_df = maskOfficeHour2(test_df)
-
-    print(test_df)
-    print(df['@timestamp'].str[11:19])
-
+    
+    countryStr = listOfCountryDst()
+    test_df['ads_country_dst'] = test_df['ads_country_dst'].mask(~test_df['ads_country_dst'].isin(countryStr),'OTHER')
+    
     test_df = test_df.drop(['@timestamp'], axis=1)
 
     X_new = X_transform.transform(test_df)
-    
     data = {
         "data":
         X_new.toarray().tolist()
@@ -48,8 +47,6 @@ def get_invocationsV2():
     request_timestamp = content['@timestamp']
     content_data = createDataV2(request_country,request_timestamp)
 
-    print(content_data)
-
     try:
         resp = requests.post(
             url="http://%s:%s/invocations" % (host, port),
@@ -67,14 +64,25 @@ def get_invocationsV2():
     
 if __name__ == '__main__':
     
-    df = pd.read_json("data/firewall-traffic.json", lines=True)
-    df_country = df["ads_country_dst"]
-    df_OfficeHour = maskOfficeHour2(df)
-    df_categories = pd.concat([df_country, df_OfficeHour['is_OfficeHour']], axis=1, sort=False,)
-    enc = OneHotEncoder(handle_unknown='ignore')
-    X_transform = make_column_transformer((enc,['ads_country_dst']),(enc,['is_OfficeHour']))
-    X_transform.fit(df_categories)
+    # df = pd.read_json("data/firewall-traffic.json", lines=True)
+    # df_country = df["ads_country_dst"]
+    # df_OfficeHour = maskOfficeHour2(df)
+    # df_categories = pd.concat([df_country, df_OfficeHour['is_OfficeHour']], axis=1, sort=False,)
+    # enc = OneHotEncoder(handle_unknown='ignore')
+    # X_transform = make_column_transformer((enc,['ads_country_dst']),(enc,['is_OfficeHour']))
+    # X_transform.fit(df_categories)
+
+    # Make a Reverse Engineer Dataframe
+    # initialize list of lists
+    # data = [['Russian Federation', 'yes'], ['Russian Federation', 'no'], ['OTHER', 'yes'], ['OTHER', 'no']]    
+    # df = pd.DataFrame(data, columns=['ads_country_dst', 'is_OfficeHour'])
     
+    # enc = OneHotEncoder(handle_unknown='ignore')
+    # X_transform = make_column_transformer((enc,['ads_country_dst']),(enc,['is_OfficeHour']))
+    # X_transform.fit(df)
+    
+    X_transform = createXTransform()
+
     print("Server Ready On Port " + gateway_port)
 
     serve(app, host="0.0.0.0", port=gateway_port)

@@ -11,13 +11,17 @@ from sklearn.compose import make_column_transformer
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import LabelEncoder
 
-from sharelib import maskOfficeHour2,maskThreat2
+from sharelib import *
 ########### mflow ############
 import mlflow
 import mlflow.sklearn
 ########### mflow ############
 
 import logging
+
+from pathlib import Path
+import json
+import glob
 
 logging.basicConfig(level=logging.WARN)
 logger = logging.getLogger(__name__)
@@ -30,8 +34,23 @@ logger = logging.getLogger(__name__)
 
 if __name__ == "__main__":
 
-    df = pd.read_json("data/firewall-traffic.json", lines=True)
+    # df = pd.read_json("data/firewall-traffic-2.json", lines=True)
+    # paths = Path("rawdata/").glob("*.txt")
+    # df = pd.DataFrame([pd.read_json(p, lines=True) for p in paths])
+    # df = pd.read_json("rawdata/ls.s3.b5b64958-2c75-40b0-b9d0-9a53a308aad5.2023-05-14T01.55.part200.txt", lines=True)
 
+    df = pd.DataFrame()
+    path_to_json = 'rawdata' 
+    print(path_to_json)
+    json_pattern = os.path.join(path_to_json,'*.txt')
+    print(json_pattern)    
+    file_list = glob.glob(json_pattern)
+    print(file_list)
+    
+    for file in file_list:
+        data = pd.read_json(file, lines=True)
+        df = pd.concat([df,data], ignore_index = True)
+    
     # print("---------- data frame ---------")
     # print(df.head())
     # print(df.info())
@@ -44,7 +63,16 @@ if __name__ == "__main__":
     
     df_country = df["ads_country_dst"]
     # print("---------- df_country ---------")
-    # print(df_country)
+    # print(df_country.unique())
+    # print(df_country.nunique())
+
+    countryStr = listOfCountryDst()
+
+    # countryStr = ['Russian Federation']
+    df_country = df_country.mask(~df_country.isin(countryStr),'OTHER')
+    # print(df_country.unique())
+    # print(df_country.nunique())
+
     # print(df_country.value_counts())
     # Name: ads_country_dst, Length: 6679, dtype: object
     # Thailand                       3610
@@ -94,13 +122,16 @@ if __name__ == "__main__":
     # df['is_threat'] = pd.Series('no', index=df.index).mask(df['ads_country_dst']=="Russian Federation", 'yes')    
     df_threat = maskThreat2(df)
     # print("---------- Y ---------")
-    # print(df_threat['is_threat'].value_counts())    
+    print(df_threat['is_threat'].value_counts())    
     # # no     6667
     # # yes      12
     # # Name: is_threat, dtype: int64
     # print("---------- Y ---------")
 
+    # df_OfficeHour['is_OfficeHour'] = df_OfficeHour['is_OfficeHour'].mask(df_OfficeHour['is_OfficeHour'] == "false","true")
+
     df_categories = pd.concat([df_country, df_OfficeHour['is_OfficeHour']], axis=1, sort=False,)
+    
     # print("---------- df_categories ---------")
     # print(df_categories)   
     # print(df_categories.value_counts())
@@ -110,7 +141,15 @@ if __name__ == "__main__":
     # print(df_categories.info())
 
     # print("---------- df_categories 1653 ---------")    
-    # print(df_categories.iloc[1653])
+    # print(df_categories.iloc[498])
+    # print(df_categories[df["ads_alert_by_dstip"] == "true"].to_string())
+    # print(df_categories[df["ads_alert_by_dstip"] == "true"].value_counts())
+#     ads_country_dst              is_OfficeHour
+# 192.168.0.0-192.168.255.255  yes              188
+# United States                yes               40
+# Japan                        no                 8
+# Japan                        yes                7
+# United States                no                 1
     # print("---------- df_categories 1653 ---------")
     
 
@@ -194,30 +233,23 @@ if __name__ == "__main__":
 
     # print("---------- X ---------")
     # Create a OneHotEncoder object, and fit it to all of X
-    enc = OneHotEncoder(handle_unknown='ignore')
-    X_transform = make_column_transformer((enc,['ads_country_dst']),(enc,['is_OfficeHour']))
-    X_transform.fit(df_categories)
+    # enc = OneHotEncoder(handle_unknown='ignore')
+    # X_transform = make_column_transformer((enc,['ads_country_dst']),(enc,['is_OfficeHour']))
+    # X_transform.fit(df_categories)
+    X_transform = createXTransform()
     X = X_transform.transform(df_categories)
-    # print(enc.categories)
-    # print(X_transform)
-    # print("---------- X_1hot Test ---------")
-
-    # print(type(X))
-    # <class 'scipy.sparse._csr.csr_matrix'>    
-    # print(X[1653])
-    # (0, 23)       1.0
-    # (0, 32)       1.0
-    # print(X[1653].toarray())
-    # [[0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 1. 0. 0. 0. 0. 0. 0. 0. 0. 1. 0.]]
-    # print("---------- X_1hot Test ---------")
     # print("---------- X ---------")
     
     # print("---------- y ---------")    
     y = df_threat['is_threat']
-    # print(y)
-    # print(y.value_counts())
-    # print(y[1653])
-    # print(y.loc[y == "yes"])
+    # y = df["ads_alert_by_dstip"]
+    # y = y.mask(y.isna(),"false")
+    print(y.value_counts())
+    print(y.loc[y == "true"])
+    # print(X[498])
+    # print("---------- x.loc[y == true] ---------")    
+    print(X[y == "true"])
+    # print("---------- x.loc[y == true] ---------")   
     # 1653    yes
     # 1886    yes
     # 2232    yes
@@ -234,7 +266,7 @@ if __name__ == "__main__":
 
     print("---------------------")
     # # Split the data into train and test set
-    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=1,train_size=0.75)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=1,train_size=0.9)
     print("X_train shape is:", X_train.shape)
     print("y_train shape is:", y_train.shape)
     print("X_test shape is:", X_test.shape)
@@ -275,11 +307,28 @@ if __name__ == "__main__":
 
 
 
+    print("----------- Make a prediction ------------")
+    # print(X.shape[0])
+    # # print(type(X))
+    # count = 0
+    # for icount in range(X.shape[0]):
+    #     X_new = X[icount].toarray().tolist()
+    #     # print(X_new)
 
-    # print("----------- Predict ------------")
-    # X_new = np.array(X[1653].toarray())
-    # print(X_new)
-    
+    #     y_pred = logreg.predict(X_new)
+    #     if y_pred[0] == "true":
+    #         print("Predicted target true:", icount)
+    #         count = count+1
+    # #     # else:
+    # #     #     print("icount: ", icount)
+
+    # print("count true:", count)
+
+    # X_new = X[498].toarray().tolist()
+    # X_new = X[498]
+    # y_pred = logreg.predict(X_new)
+    # print("Predicted target name:", y_pred[0])
+
     # # Make a prediction
     # test_df = pd.DataFrame([
     # ['Russian Federation','Feb 22, 2023 @ 17:59:59.942']
@@ -299,4 +348,7 @@ if __name__ == "__main__":
     # y_pred_prob = logreg.predict_proba(X_new)
     # print("Prediction:", y_pred, "with the probability array:", y_pred_prob)
     # print("Predicted target name:", y_pred[0])
+
+
+
     # print("----------- Predict ------------")
