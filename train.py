@@ -46,6 +46,8 @@ if __name__ == "__main__":
     print(json_pattern)    
     file_list = glob.glob(json_pattern)
     print(file_list)
+
+    print("111111111111111111111111111111111111111111111")
     
     for file in file_list:
         data = pd.read_json(file, lines=True)
