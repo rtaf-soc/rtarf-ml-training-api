@@ -53,6 +53,7 @@ pipeline
                     container("python") 
                     {
                         sh "python --version"                           
+                        sh "ls rawdata/"                           
                         sh "python train2.py"                           
                     }
                 }
