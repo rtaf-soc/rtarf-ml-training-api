@@ -53,7 +53,7 @@ pipeline
                     container("python") 
                     {
                         sh "python --version"                           
-                        sh "export MLFLOW_TRACKING_URI=http://mlflow.rtarf-ml.its-software-services.com/"                           
+                        sh "MLFLOW_TRACKING_URI='http://mlflow.rtarf-ml.its-software-services.com/'"                           
                         sh "ls"                           
                         sh "env"                           
                         sh "python train.py"                           
