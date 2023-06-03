@@ -25,6 +25,19 @@ pipeline
                 }
             }
         }         
+        stage('PrePare DataSet') 
+        { 
+            steps 
+            {
+                script 
+                {
+                    container("minio-mc") 
+                    {
+                        sh "mc -v"                                                                            
+                    }
+                }
+            }
+        }         
         stage('Run Model') 
         { 
             steps 
