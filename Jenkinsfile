@@ -19,49 +19,55 @@ pipeline
                 {
                     container("python") 
                     {
-                        sh "python --version"                           
+                        sh "python --version"            
+                        sh "export MLFLOW_TRACKING_URI=http://mlflow.rtarf-ml.its-software-services.com/"                           
+                        sh "ls"                           
+                        sh "env"                           
+                        sh "python test.py"
+
+
                         sh "pip install -r requirements.txt"                                                                              
                     }
                 }
             }
         }         
-        stage('PrePare DataSet') 
-        { 
-            steps 
-            {
-                script 
-                {
-                    container("minio-mc") 
-                    {
-                        sh "mc -v"
-                        withCredentials([usernamePassword(credentialsId: 'AWS_CREDENTIAL', passwordVariable: 'password', usernameVariable: 'username')])     
-                        {
-                            sh "mc alias set myminio https://minio-ml-hl.minio-ml.svc.cluster.local:9000 ${username} ${password}"
-                            sh "mkdir rawdata"
-                            sh "mc cp --recursive  myminio/data-from-siem/14/ ./rawdata/"
-                        }                                                                            
-                    }
-                }
-            }
-        }         
-        stage('Run Model') 
-        { 
-            steps 
-            {
-                script 
-                {
-                    container("python") 
-                    {
-                        sh "python --version"                           
-                        sh "export MLFLOW_TRACKING_URI=http://mlflow.rtarf-ml.its-software-services.com/"                           
-                        sh "ls"                           
-                        sh "env"                           
-                        sh "python test.py"
-                        println("------------------")                           
-                        sh "python train.py"                           
-                    }
-                }
-            }
-        }         
+        // stage('PrePare DataSet') 
+        // { 
+        //     steps 
+        //     {
+        //         script 
+        //         {
+        //             container("minio-mc") 
+        //             {
+        //                 sh "mc -v"
+        //                 withCredentials([usernamePassword(credentialsId: 'AWS_CREDENTIAL', passwordVariable: 'password', usernameVariable: 'username')])     
+        //                 {
+        //                     sh "mc alias set myminio https://minio-ml-hl.minio-ml.svc.cluster.local:9000 ${username} ${password}"
+        //                     sh "mkdir rawdata"
+        //                     sh "mc cp --recursive  myminio/data-from-siem/14/ ./rawdata/"
+        //                 }                                                                            
+        //             }
+        //         }
+        //     }
+        // }         
+        // stage('Run Model') 
+        // { 
+        //     steps 
+        //     {
+        //         script 
+        //         {
+        //             container("python") 
+        //             {
+        //                 sh "python --version"                           
+        //                 sh "export MLFLOW_TRACKING_URI=http://mlflow.rtarf-ml.its-software-services.com/"                           
+        //                 sh "ls"                           
+        //                 sh "env"                           
+        //                 sh "python test.py"
+        //                 println("------------------")                           
+        //                 sh "python train.py"                           
+        //             }
+        //         }
+        //     }
+        // }         
     }
 }
