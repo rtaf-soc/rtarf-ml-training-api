@@ -34,24 +34,24 @@ logger = logging.getLogger(__name__)
 
 if __name__ == "__main__":
 
-    # df = pd.read_json("data/firewall-traffic-2.json", lines=True)
+    df = pd.read_json("rawdata/test.txt", lines=True)
     # paths = Path("rawdata/").glob("*.txt")
     # df = pd.DataFrame([pd.read_json(p, lines=True) for p in paths])
     # df = pd.read_json("rawdata/ls.s3.b5b64958-2c75-40b0-b9d0-9a53a308aad5.2023-05-14T01.55.part200.txt", lines=True)
 
-    df = pd.DataFrame()
-    path_to_json = 'rawdata' 
-    print(path_to_json)
-    json_pattern = os.path.join(path_to_json,'*.txt')
-    print(json_pattern)    
-    file_list = glob.glob(json_pattern)
-    print(file_list)
+    # df = pd.DataFrame()
+    # path_to_json = 'rawdata' 
+    # print(path_to_json)
+    # json_pattern = os.path.join(path_to_json,'*.txt')
+    # print(json_pattern)    
+    # file_list = glob.glob(json_pattern)
+    # print(file_list)
 
     print("111111111111111111111111111111111111111111111")
     
-    for file in file_list:
-        data = pd.read_json(file, lines=True)
-        df = pd.concat([df,data], ignore_index = True)
+    # for file in file_list:
+    #     data = pd.read_json(file, lines=True)
+    #     df = pd.concat([df,data], ignore_index = True)
     
     # print("---------- data frame ---------")
     # print(df.head())
