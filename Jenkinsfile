@@ -25,7 +25,7 @@ pipeline
                 }
             }
         }         
-        stage('Test Python') 
+        stage('Run Model') 
         { 
             steps 
             {
