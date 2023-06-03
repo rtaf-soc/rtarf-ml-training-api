@@ -33,7 +33,13 @@ pipeline
                 {
                     container("minio-mc") 
                     {
-                        sh "mc -v"                                                                            
+                        sh "mc -v"
+                        withCredentials([usernamePassword(credentialsId: 'AWS_CREDENTIAL', passwordVariable: 'password', usernameVariable: 'username')])     
+                        {
+                            sh "mc alias set myminio https://minio-ml-hl.minio-ml.svc.cluster.local:9000 ${username} ${password}"
+                            sh "mkdir rawdata"
+                            sh "mc cp --recursive  myminio/data-from-siem/14/ ./rawdata/"
+                        }                                                                            
                     }
                 }
             }
