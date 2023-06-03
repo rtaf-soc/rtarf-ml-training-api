@@ -20,6 +20,7 @@ pipeline
                     container("python") 
                     {
                         sh "python --version"                           
+                        sh "ls"                           
                     }
                 }
             }
