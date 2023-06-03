@@ -54,6 +54,7 @@ pipeline
                     {
                         sh "python --version"                           
                         sh "ls rawdata/"                           
+                        sh "cat rawdata/1.txt"                           
                         sh "python train2.py"                           
                     }
                 }
