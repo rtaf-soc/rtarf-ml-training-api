@@ -53,7 +53,7 @@ pipeline
                     container("python") 
                     {
                         sh "python --version"                           
-                        sh "python train.py"                           
+                        sh "python train2.py"                           
                     }
                 }
             }
