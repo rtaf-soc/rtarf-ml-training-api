@@ -55,8 +55,8 @@ pipeline
                     container("python") 
                     {
                         def getResult = sh(script: "python train.py", returnStdout: true)
-                        def getResultLast = sh(script: "cat ${getResult} | tail -n1", returnStdout: true)
-                        currentBuild.description = "RunID: ${getResultLast}"
+                        // def getResultLast = sh(script: "cat ${getResult} | tail -n1", returnStdout: true)
+                        // currentBuild.description = "RunID: ${getResultLast}"
                     }
                 }
             }
