@@ -39,23 +39,13 @@ if __name__ == "__main__":
     # df = pd.DataFrame([pd.read_json(p, lines=True) for p in paths])
     # df = pd.read_json("rawdata/ls.s3.b5b64958-2c75-40b0-b9d0-9a53a308aad5.2023-05-14T01.55.part200.txt", lines=True)
 
-    print("111111111111111111111111111111111111111111111")
-    
-
     df = pd.DataFrame()
     path_to_json = 'rawdata' 
-    print(path_to_json)
     json_pattern = os.path.join(path_to_json,'*.txt')
-    print(json_pattern)    
     file_list = glob.glob(json_pattern)
-    print(file_list)
-
-    print("22222222222222222222222")
     
     for file in file_list:
         data = pd.read_json(file, lines=True)
-        print("data :" )
-        print("data file is: ", file)
         df = pd.concat([df,data], ignore_index = True)
     
     # print("---------- data frame ---------")
