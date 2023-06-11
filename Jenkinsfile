@@ -38,7 +38,9 @@ pipeline
                         {
                             sh "mc alias set myminio https://minio-ml-hl.minio-ml.svc.cluster.local:9000 ${username} ${password}"
                             sh "mkdir rawdata"
-                            sh "mc cp myminio/data-from-siem/14/ls.s3.b504175e-ca7b-48c5-8551-4ffdc251ed75.2023-05-14T23.07.part1358.txt rawdata/1.txt"
+                            // sh "mc cp myminio/data-from-siem/14/ls.s3.b504175e-ca7b-48c5-8551-4ffdc251ed75.2023-05-14T23.07.part1358.txt rawdata/1.txt"
+                            sh "mc cp --recursive  myminio/data-from-siem/14/ ./rawdata/"
+                            sh "ls -alrt ./rawdata/"
                         }                                                                            
                     }
                 }
