@@ -54,6 +54,8 @@ if __name__ == "__main__":
     
     for file in file_list:
         data = pd.read_json(file, lines=True)
+        print("data :" )
+        print("data file is: ", file)
         df = pd.concat([df,data], ignore_index = True)
     
     # print("---------- data frame ---------")
