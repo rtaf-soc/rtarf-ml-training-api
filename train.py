@@ -302,9 +302,7 @@ if __name__ == "__main__":
         print("Model saved in run %s" % mlflow.active_run().info.run_uuid)
 
 
-
-
-    print("----------- Make a prediction ------------")
+    # print("----------- Make a prediction ------------")
     # print(X.shape[0])
     # # print(type(X))
     # count = 0
@@ -349,3 +347,9 @@ if __name__ == "__main__":
 
 
     # print("----------- Predict ------------")
+
+
+
+
+
+String
