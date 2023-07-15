@@ -238,9 +238,9 @@ if __name__ == "__main__":
     # print("---------- X ---------")
     
     # print("---------- y ---------")    
-    y = df_threat['is_threat']
-    # y = df["ads_alert_by_dstip"]
-    # y = y.mask(y.isna(),"false")
+    # y = df_threat['is_threat']
+    y = df["ads_alert_by_dstip"]
+    y = y.mask(y.isna(),"false")
     print(y.value_counts())
     print(y.loc[y == "true"])
     # print(X[498])
