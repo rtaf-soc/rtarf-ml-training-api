@@ -41,6 +41,27 @@ def createXTransform():
 
     return X_transform
 
+def createXTransformDst():
+
+    temp_df = pd.DataFrame(listOfCountryDst(), columns=['ads_country_dst'])
+    temp_df.loc[len(temp_df.index)] = ['OTHER'] 
+
+    enc = OneHotEncoder(handle_unknown='ignore')
+    X_transform = make_column_transformer((enc,['ads_country_dst']))
+    X_transform.fit(temp_df)
+
+    return X_transform
+
+def createXTransformTime():
+
+    temp_df = pd.DataFrame(['yes','no'], columns=['is_OfficeHour'])
+    
+    enc = OneHotEncoder(handle_unknown='ignore')
+    X_transform = make_column_transformer((enc,['is_OfficeHour']))
+    X_transform.fit(temp_df)
+
+    return X_transform
+
 def listOfCountryDst():
 
     countryStr = ['United States','Thailand','10.0.0.0-10.255.255.255','Singapore','Kenya'
