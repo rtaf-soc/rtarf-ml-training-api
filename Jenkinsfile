@@ -60,6 +60,20 @@ pipeline
                     }
                 }
             }
+        }
+
+        stage('Run Model TIME') 
+        { 
+            steps 
+            {
+                script 
+                {
+                    container("python") 
+                    {
+                        sh "python train-time.py"
+                    }
+                }
+            }
         }         
     }
 }
