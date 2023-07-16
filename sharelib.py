@@ -26,6 +26,8 @@ def maskOfficeHour2(df):
     toHourStr = '17:00:00'
     return df.assign(is_OfficeHour=pd.Series('no', index=df.index).mask((((df['@timestamp'].str[11:19]>=fromHourStr) & (df['@timestamp'].str[11:19]<=toHourStr))), 'yes'))
 
+def maskThreat3(df):
+    return df.assign(is_threat=pd.Series('false', index=df.index).mask(((df['ads_alert_by_dstip']=="true") | (df['ads_alert_by_blacklist_dstip']=="true")), 'true'))
 
 def createXTransform():
 

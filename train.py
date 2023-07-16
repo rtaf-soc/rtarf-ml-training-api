@@ -40,11 +40,15 @@ if __name__ == "__main__":
     # df = pd.read_json("rawdata/ls.s3.b5b64958-2c75-40b0-b9d0-9a53a308aad5.2023-05-14T01.55.part200.txt", lines=True)
 
     df = pd.DataFrame()
-    path_to_json = 'rawdata' 
+    path_to_json = 'rawdata2/6' 
     json_pattern = os.path.join(path_to_json,'*.txt')
     file_list = glob.glob(json_pattern)
     
+    xcount = 0
+
     for file in file_list:
+        xcount = xcount + 1
+        print("xcount: ", xcount)
         data = pd.read_json(file, lines=True)
         df = pd.concat([df,data], ignore_index = True)
     
@@ -54,6 +58,10 @@ if __name__ == "__main__":
     # print(df.describe())
     # print("---------- data frame ---------")
     
+    print("------------- ads_alert_by_blacklist_dstip'].value_counts() ------------- ")    
+    print(df['ads_alert_by_blacklist_dstip'].value_counts())    
+    print("------------- ads_alert_by_blacklist_dstip'].value_counts() ------------- ")    
+
     # print("---------- @timestamp ---------")
     # print(df["@timestamp"])
     # print("---------- @timestamp ---------")
@@ -117,9 +125,10 @@ if __name__ == "__main__":
 
     
     # df['is_threat'] = pd.Series('no', index=df.index).mask(df['ads_country_dst']=="Russian Federation", 'yes')    
-    df_threat = maskThreat2(df)
+    print("---------- maskThreat3 ---------")
+    df_threat = maskThreat3(df)
     # print("---------- Y ---------")
-    print(df_threat['is_threat'].value_counts())    
+    # print(df_threat['is_threat'].value_counts())    
     # # no     6667
     # # yes      12
     # # Name: is_threat, dtype: int64
@@ -238,14 +247,15 @@ if __name__ == "__main__":
     # print("---------- X ---------")
     
     # print("---------- y ---------")    
-    # y = df_threat['is_threat']
-    y = df["ads_alert_by_dstip"]
+    y = df_threat['is_threat']
+    # y = df["ads_alert_by_dstip"]
     y = y.mask(y.isna(),"false")
     print(y.value_counts())
     print(y.loc[y == "true"])
     # print(X[498])
     # print("---------- x.loc[y == true] ---------")    
     print(X[y == "true"])
+    print("----------------------------------------------------------------------------------------------------")
     # print("---------- x.loc[y == true] ---------")   
     # 1653    yes
     # 1886    yes
