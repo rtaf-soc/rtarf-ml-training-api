@@ -125,7 +125,7 @@ if __name__ == "__main__":
 
     
     # df['is_threat'] = pd.Series('no', index=df.index).mask(df['ads_country_dst']=="Russian Federation", 'yes')    
-    print("---------- maskThreat3 ---------")
+    # print("---------- maskThreat3 ---------")
     df_threat = maskThreat3(df)
     # print("---------- Y ---------")
     # print(df_threat['is_threat'].value_counts())    
@@ -139,8 +139,8 @@ if __name__ == "__main__":
     # df_categories = pd.concat([df_country, df_OfficeHour['is_OfficeHour']], axis=1, sort=False,)
     df_categories = pd.concat([df_country], axis=1, sort=False,)
     
-    print("---------- df_categories ---------")
-    print(df_categories)   
+    # print("---------- df_categories ---------")
+    # print(df_categories)   
     print(df_categories.value_counts())
 
     # print(type(df_categories))
@@ -256,7 +256,6 @@ if __name__ == "__main__":
     # print(X[498])
     # print("---------- x.loc[y == true] ---------")    
     print(X[y == "true"])
-    print("----------------------------------------------------------------------------------------------------")
     # print("---------- x.loc[y == true] ---------")   
     # 1653    yes
     # 1886    yes
@@ -270,7 +269,7 @@ if __name__ == "__main__":
     # 4758    yes
     # 4900    yes
     # 5495    yes
-    # print("---------- y ---------")
+    print("---------- y ---------")
 
     print("---------------------")
     # # Split the data into train and test set

@@ -58,9 +58,9 @@ if __name__ == "__main__":
     # print(df.describe())
     # print("---------- data frame ---------")
     
-    print("------------- ads_alert_by_blacklist_dstip'].value_counts() ------------- ")    
-    print(df['ads_alert_by_blacklist_dstip'].value_counts())    
-    print("------------- ads_alert_by_blacklist_dstip'].value_counts() ------------- ")    
+    # print("------------- ads_alert_by_blacklist_dstip'].value_counts() ------------- ")    
+    # print(df['ads_alert_by_blacklist_dstip'].value_counts())    
+    # print("------------- ads_alert_by_blacklist_dstip'].value_counts() ------------- ")    
 
     # print("---------- @timestamp ---------")
     # print(df["@timestamp"])
@@ -125,7 +125,6 @@ if __name__ == "__main__":
 
     
     # df['is_threat'] = pd.Series('no', index=df.index).mask(df['ads_country_dst']=="Russian Federation", 'yes')    
-    print("---------- maskThreat3 ---------")
     df_threat = maskThreat3(df)
     # print("---------- Y ---------")
     # print(df_threat['is_threat'].value_counts())    
@@ -140,8 +139,8 @@ if __name__ == "__main__":
     df_categories = pd.concat([df_OfficeHour['is_OfficeHour']], axis=1, sort=False,)
     
     print("---------- df_categories ---------")
-    print(df_categories)   
-    print(df_categories.value_counts())
+    # print(df_categories)   
+    # print(df_categories.value_counts())
 
     # print(type(df_categories))
     # print(df_categories.describe)
