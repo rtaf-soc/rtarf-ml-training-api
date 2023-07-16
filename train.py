@@ -40,7 +40,7 @@ if __name__ == "__main__":
     # df = pd.read_json("rawdata/ls.s3.b5b64958-2c75-40b0-b9d0-9a53a308aad5.2023-05-14T01.55.part200.txt", lines=True)
 
     df = pd.DataFrame()
-    path_to_json = 'rawdata2/6' 
+    path_to_json = 'rawdata' 
     json_pattern = os.path.join(path_to_json,'*.txt')
     file_list = glob.glob(json_pattern)
     
