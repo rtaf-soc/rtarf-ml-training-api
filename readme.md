@@ -29,12 +29,30 @@
     export MLFLOW_TRACKING_URI=http://127.0.0.1:8889
     
     mlflow run .
+    mlflow run . --env-manager local
     mlflow models serve -m file:///mnt/d/work/mlflow/mlflow/examples/supply_chain_security/mlruns/0/2848e2593fc24c7cbcef69b5ad8ec148/artifacts/model -p 1234
 
     mlflow models serve -m mlflow-artifacts:/5/8911fc4e3a514e969cac16d157b008ed/artifacts/model -p 1236
+    mlflow models serve -m mlflow-artifacts:/5/8911fc4e3a514e969cac16d157b008ed/artifacts/model -p 1236 --no-conda
 
 # Test From PostMan
 
+    http://127.0.0.1:1234/invocations
+
+    {"dataframe_split": {"data":
+    [   [ 13.72917 , 100.52389 ],
+        [ 13.2434 ,  100.12212 ],
+        [  1.234  ,  100.34344 ],
+        [  1.234  ,   10.34344 ],
+        [  1.234  ,   10.34344 ],
+        [  1.234  ,   10.34344 ],
+        [  1.234  ,  100.8     ],
+        [  1.234  ,  100.09    ],
+        [  1.234  ,   18.34344 ],
+        [  1.234  ,   19.34994 ],
+        [ 13.675776 , 100.423432]
+    ]
+    }}
 
     http://127.0.0.1:1234/invocations
 
@@ -79,6 +97,12 @@
 # Test From Curl
 
 ## On Invocation
+    curl -X POST -H "Content-Type:application/json"                     \
+    --data "{\"dataframe_split\": {\"data\":[                      \
+        [13.72917 , 100.52389],
+	    [13.12323 , 100.34343]
+	]}}"                                   \
+    http://127.0.0.1:1236/invocations | jq
 
     curl -X POST -H "Content-Type:application/json"                     \
     --data "{\"dataframe_split\": {\"data\":[[                          \
