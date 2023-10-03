@@ -1,6 +1,7 @@
 import pandas as pd
 from sklearn.compose import make_column_transformer
 from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import OrdinalEncoder
 
 def maskThreat(df):
     toThreatHourStr = '08:00:00.000'
@@ -62,6 +63,17 @@ def createXTransformTime():
 
     return X_transform
 
+def createXTransformDst2():
+
+    temp_df = pd.DataFrame(listOfCountryDst(), columns=['ads_country_dst'])
+    temp_df.loc[len(temp_df.index)] = ['OTHER']
+
+    scaler = OrdinalEncoder().set_output(transform="pandas")
+    # scaler = OrdinalEncoder()
+    X_transform = scaler.fit(temp_df)
+    
+    return X_transform
+
 def listOfCountryDst():
 
     countryStr = ['United States','Thailand','10.0.0.0-10.255.255.255','Singapore','Kenya'
@@ -98,5 +110,7 @@ def listOfCountryDst():
     ,'Djibouti','Myanmar','Senegal'
     ,'Montenegro','Guadeloupe','Uzbekistan','Albania','RUnion','Jamaica'
     ,'Brunei Darussalam']
+
+    # print(len(countryStr))
 
     return countryStr
