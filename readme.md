@@ -154,7 +154,16 @@
         ]
     }
 
+    curl -X POST -H "Content-Type:application/json"                     \
+    --data "{\"data\": {\"data\":[[\"Russian Federation\",\"yes\"]]}}"  \
+    http://mlflow-gateway.rtarf-ml.its-software-services.com/v2/gateway | jq
 
+    {
+        "predictions": [
+            "no"
+        ]
+    }
+    
     curl -X POST -H "Content-Type:application/json"                     \
     --data "{\"data\": {\"data\":[[\"Russian Federation\",\"no\"]]}}"  \
     http://127.0.0.1:5000/gateway | jq

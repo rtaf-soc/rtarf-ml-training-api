@@ -61,6 +61,39 @@ def get_invocationsV2():
         errmsg = "Caught exception attempting to call model endpoint: %s" % e
         print(errmsg, end="")
         return resp.json()
+
+@app.route('/v3/gateway', methods=['GET'])
+def get_MockData():
+
+    mockData = {
+                    "results": [
+                        {
+                            "subject": "supervised_dst_country_anomaly",
+                            "result": "true",
+                            "certainty": 0.99
+                        },
+                        {
+                            "subject": "supervised_login_anomaly",
+                            "result": "false",
+                            "certainty": 1.00
+                        },
+                        {
+                            "subject": "unsupervised_dst_country_anomaly",
+                            "result": "true",
+                            "certainty": 0.99
+                        },
+                        {
+                            "subject": "unsupervised_login_anomaly",
+                            "result": "false",
+                            "certainty": 0.99
+                        }
+                    ]
+                }
+
+    jsonString = json.dumps(mockData, indent=4)
+    
+    return jsonString
+
     
 if __name__ == '__main__':
     
