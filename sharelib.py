@@ -63,7 +63,7 @@ def createXTransformTime():
 
     return X_transform
 
-def createXTransformDst2():
+def createXTransformOrdinalDst():
 
     temp_df = pd.DataFrame(listOfCountryDst(), columns=['ads_country_dst'])
     temp_df.loc[len(temp_df.index)] = ['OTHER']
