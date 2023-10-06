@@ -109,8 +109,19 @@ def listOfCountryDst():
     ,'Mozambique','Congo The Democratic Republic Of The','Seychelles','Aruba'
     ,'Djibouti','Myanmar','Senegal'
     ,'Montenegro','Guadeloupe','Uzbekistan','Albania','RUnion','Jamaica'
-    ,'Brunei Darussalam']
+    ,'Brunei Darussalam','Tokelau','Martinique','Haiti','Mongolia','Bouvet Island'
+    ,'Virgin Islands U','Rwanda','Donetsk','Northern Mariana Islands','Nicaragua']
 
     # print(len(countryStr))
 
     return countryStr
+
+
+def dataPredictionToString(predictCode):
+    strMap = ""
+    if (predictCode == 1):
+        strMap = "Normaly"
+    else:
+        strMap = "Anormaly"
+
+    return strMap
