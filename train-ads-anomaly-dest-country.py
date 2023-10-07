@@ -28,12 +28,12 @@ if __name__ == "__main__":
     json_pattern = os.path.join(path_to_json,'*.txt')
     file_list = glob.glob(json_pattern)
     
-    xcount = 0
+    xcountDetect = 0
 
     for file in file_list:
-        xcount = xcount + 1
-        print("xcount: ", xcount)
-        if (xcount == 10):
+        xcountDetect = xcountDetect + 1
+        print("xcountDetect: ", xcountDetect)
+        if (xcountDetect == 10):
             break
         data = pd.read_json(file, lines=True)
         df = pd.concat([df,data], ignore_index = True)
@@ -42,15 +42,15 @@ if __name__ == "__main__":
     
     np.set_printoptions(threshold=sys.maxsize)
 
-    df_categories = df[df["ads_country_dst"].str.startswith(('1', '2', '3', '4', '5', '6', '7', '8', '9', '0')) == False] 
-    df_categories = pd.concat([df_categories["ads_country_dst"]], axis=1, sort=False,)
+    df_categories = df[df["ads_countDetectry_dst"].str.startswith(('1', '2', '3', '4', '5', '6', '7', '8', '9', '0')) == False] 
+    df_categories = pd.concat([df_categories["ads_countDetectry_dst"]], axis=1, sort=False,)
     
-    countryStr = listOfCountryDst()
+    countDetectryStr = listOfCountryDst()
     print("-------------- Show Country Not in list --------------")
-    print(df_categories[~df_categories['ads_country_dst'].isin(countryStr)])
+    print(df_categories[~df_categories['ads_countDetectry_dst'].isin(countDetectryStr)])
     print("-------------- Show Country Not in list --------------")
 
-    df_categories = df_categories.mask(~df_categories.isin(countryStr),'OTHER')
+    df_categories = df_categories.mask(~df_categories.isin(countDetectryStr),'OTHER')
     X_transform = createXTransformOrdinalDst()
     X = X_transform.transform(df_categories)
     
@@ -58,22 +58,22 @@ if __name__ == "__main__":
     lof_detector = LocalOutlierFactor(n_neighbors=10, contamination=0.01,novelty=True).fit(X.values)
     lof_detect = lof_detector.predict(X)
 
-    record,count = np.unique(lof_detect, return_counts=True)
+    recordDetect,countDetect = np.unique(lof_detect, return_countDetects=True)
     print("--------------Count Anomaly VS Normal-------------")
-    print("Anomaly = " , count[0] , "record with " , (count[0])*100/(count[0]+count[1]) ," %")
-    print("Normal  = " , count[1] , "record with " , (count[1])*100/(count[0]+count[1]) ," %")
+    print("Anomaly = " , countDetect[0] , "record with " , (countDetect[0])*100/(countDetect[0]+countDetect[1]) ," %")
+    print("Normal  = " , countDetect[1] , "record with " , (countDetect[1])*100/(countDetect[0]+countDetect[1]) ," %")
     print("--------------Count Anomaly VS Normal-------------")
     
     print("-------------- List Destination Country with Prediction -------------")
-    # print(type(df_categories.value_counts()))
+    # print(type(df_categories.value_countDetects()))
     # print(type(df_categories))
-    for index, value in df_categories.value_counts().items():
+    for index, value in df_categories.value_countDetects().items():
         tempdf = pd.DataFrame([
             [index[0]]
-        ], columns=['ads_country_dst'])
+        ], columns=['ads_countDetectry_dst'])
         encode = X_transform.transform(tempdf)
         predictData = lof_detector.predict(encode)
-        print(index[0]  , " | code =" , encode.values[0][0] , " | count ="  , value , " | result =" , dataPredictionToString(predictData[0]))
+        print(index[0]  , " | code =" , encode.values[0][0] , " | countDetect ="  , value , " | result =" , dataPredictionToString(predictData[0]))
 
     print("-------------- List Destination Country with Prediction -------------")
 
@@ -86,7 +86,7 @@ if __name__ == "__main__":
     # export MLFLOW_TRACKING_USERNAME=user 
     # export MLFLOW_TRACKING_PASSWORD=pwd
 
-    experiment = mlflow.get_experiment_by_name('ads-anomaly-dest-country')
+    experiment = mlflow.get_experiment_by_name('ads-anomaly-dest-countDetectry')
     experiment_id = experiment.experiment_id
 
     with mlflow.start_run(experiment_id=experiment_id):
@@ -97,12 +97,12 @@ if __name__ == "__main__":
 
         mlflow.doctor()
 
-        mlflow.log_metric("Anomaly", str((countDetect[0])*100/(countDetect[0]+countDetect[1])))
-        mlflow.log_metric("Normal", str((countDetect[1])*100/(countDetect[0]+countDetect[1])))
+        mlflow.log_metric("Anomaly", str((countDetectDetect[0])*100/(countDetectDetect[0]+countDetectDetect[1])))
+        mlflow.log_metric("Normal", str((countDetectDetect[1])*100/(countDetectDetect[0]+countDetectDetect[1])))
         mlflow.sklearn.log_model(lof_detector, "model", registered_model_name="soc-ml")
         print("Model saved in run %s" % mlflow.active_run().info.run_uuid)
 
 
     # Plot the conparison between actual and predicted y
-    df_categories.value_counts()[: :].plot(kind="bar", figsize=(20,20))
+    df_categories.value_countDetects()[: :].plot(kind="bar", figsize=(20,20))
     plt.show()
