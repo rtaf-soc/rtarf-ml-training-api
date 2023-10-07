@@ -33,7 +33,7 @@ if __name__ == "__main__":
     for file in file_list:
         xcount = xcount + 1
         print("xcount: ", xcount)
-        if (xcount == 10):
+        if (xcount == 1):
             break
         data = pd.read_json(file, lines=True)
         df = pd.concat([df,data], ignore_index = True)
@@ -86,7 +86,7 @@ if __name__ == "__main__":
     # export MLFLOW_TRACKING_USERNAME=user 
     # export MLFLOW_TRACKING_PASSWORD=pwd
 
-    experiment = mlflow.get_experiment_by_name('ads-anomaly-dest-country')
+    experiment = mlflow.get_experiment_by_name('soc-ml-default')
     experiment_id = experiment.experiment_id
 
     with mlflow.start_run(experiment_id=experiment_id):
