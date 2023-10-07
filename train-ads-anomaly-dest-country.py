@@ -100,9 +100,9 @@ if __name__ == "__main__":
         mlflow.log_metric("Anomaly", str((countDetect[0])*100/(countDetect[0]+countDetect[1])))
         mlflow.log_metric("Normal", str((countDetect[1])*100/(countDetect[0]+countDetect[1])))
         mlflow.sklearn.log_model(lof_detector, "model", registered_model_name="soc-ml")
-        print("Model saved in run %s" % mlflow.active_run().info.run_uuid)
+        # print("Model saved in run %s" % mlflow.active_run().info.run_uuid)
 
 
     # Plot the conparison between actual and predicted y
-    df_categories.value_counts()[: :].plot(kind="bar", figsize=(20,20))
-    plt.show()
+    # df_categories.value_counts()[: :].plot(kind="bar", figsize=(20,20))
+    # plt.show()
