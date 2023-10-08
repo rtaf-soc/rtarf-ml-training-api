@@ -23,8 +23,9 @@ import sys
 
 jenkinsURL = getArgs(1,"")
 mlflowMinioFolder = getArgs(2,"")
+mlflowTrainingFileLimit = getArgs(13,10)
 
-if __name__ == "__main__":
+if __name__ == "__main__": 
     df = pd.DataFrame()
     path_to_json = 'rawdata' 
     json_pattern = os.path.join(path_to_json,'*.txt')
@@ -35,11 +36,10 @@ if __name__ == "__main__":
     for file in file_list:
         xcount = xcount + 1
         print("xcount: ", xcount)
-        # if (xcount == 10):
-        #     break
         data = pd.read_json(file, lines=True)
         df = pd.concat([df,data], ignore_index = True)
-
+        if (xcount == mlflowTrainingFileLimit):
+            break
     
     
     np.set_printoptions(threshold=sys.maxsize)
@@ -90,7 +90,12 @@ if __name__ == "__main__":
     experiment = mlflow.set_experiment(experiment_name='ads-anomaly-dest-country')
     experiment_id = experiment.experiment_id
 
-    with mlflow.start_run(experiment_id=experiment_id):
+    run_description = f"""
+    All information about Training ML here.
+    Jenkins URL : {jenkinsURL}.
+    """
+
+    with mlflow.start_run(experiment_id=experiment_id,description=run_description):
         mlflow.set_tracking_uri(tracking_uri)
         
         print("Artifact Location: {}".format(experiment.artifact_location))
@@ -101,7 +106,7 @@ if __name__ == "__main__":
         mlflowMinioFolder
         mlflow.log_param("MlflowMinioFolder", mlflowMinioFolder)
 
-        mlflow.set_tag("JenkinsURL",jenkinsURL)
+        # mlflow.set_tag("JenkinsURL",jenkinsURL)
         mlflow.log_metric("Anomaly", str((countDetect[0])*100/(countDetect[0]+countDetect[1])))
         mlflow.log_metric("Normal", str((countDetect[1])*100/(countDetect[0]+countDetect[1])))
         mlflow.sklearn.log_model(lof_detector, "model", registered_model_name="ads-anomaly-by-dest-country")
