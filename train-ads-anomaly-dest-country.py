@@ -23,7 +23,7 @@ import sys
 
 jenkinsURL = getArgs(1,"")
 mlflowMinioFolder = getArgs(2,"")
-mlflowTrainingFileLimit = getArgs(13,10)
+mlflowTrainingFileLimit = getArgs(3,10)
 
 if __name__ == "__main__": 
     df = pd.DataFrame()
