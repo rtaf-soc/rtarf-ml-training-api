@@ -98,8 +98,7 @@ if __name__ == "__main__":
 
         mlflow.doctor()
         
-        mlflow.set_experiment_tag("JenkinsURL",jenkinsURL)
-
+        mlflow.set_tag("JenkinsURL",jenkinsURL)
         mlflow.log_metric("Anomaly", str((countDetect[0])*100/(countDetect[0]+countDetect[1])))
         mlflow.log_metric("Normal", str((countDetect[1])*100/(countDetect[0]+countDetect[1])))
         mlflow.sklearn.log_model(lof_detector, "model", registered_model_name="ads-anomaly-by-fest-country")
