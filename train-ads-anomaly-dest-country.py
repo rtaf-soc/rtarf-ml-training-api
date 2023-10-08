@@ -21,6 +21,7 @@ import sys
 # logging.basicConfig(level=logging.WARN)
 # logger = logging.getLogger(__name__)
 
+jenkinsURL = getArgs(1,"")
 
 if __name__ == "__main__":
     df = pd.DataFrame()
@@ -86,7 +87,7 @@ if __name__ == "__main__":
     # export MLFLOW_TRACKING_USERNAME=user 
     # export MLFLOW_TRACKING_PASSWORD=pwd
 
-    experiment = mlflow.get_experiment_by_name('soc-ml-default')
+    experiment = mlflow.get_experiment_by_name('ads-anomaly-dest-country')
     experiment_id = experiment.experiment_id
 
     with mlflow.start_run(experiment_id=experiment_id):
@@ -96,11 +97,13 @@ if __name__ == "__main__":
         print("artifact uri : " + mlflow.get_artifact_uri())
 
         mlflow.doctor()
+        
+        mlflow.set_experiment_tag("JenkinsURL",jenkinsURL)
 
         mlflow.log_metric("Anomaly", str((countDetect[0])*100/(countDetect[0]+countDetect[1])))
         mlflow.log_metric("Normal", str((countDetect[1])*100/(countDetect[0]+countDetect[1])))
-        mlflow.sklearn.log_model(lof_detector, "model", registered_model_name="soc-ml")
-        # print("Model saved in run %s" % mlflow.active_run().info.run_uuid)
+        mlflow.sklearn.log_model(lof_detector, "model", registered_model_name="ads-anomaly-by-fest-country")
+        print("Model saved in run %s" % mlflow.active_run().info.run_uuid)
 
 
     # Plot the conparison between actual and predicted y

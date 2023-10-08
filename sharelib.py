@@ -2,6 +2,7 @@ import pandas as pd
 from sklearn.compose import make_column_transformer
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import OrdinalEncoder
+import sys
 
 def maskThreat(df):
     toThreatHourStr = '08:00:00.000'
@@ -123,5 +124,16 @@ def dataPredictionToString(predictCode):
         strMap = "Normal"
     else:
         strMap = "Anormaly"
+
+    return strMap
+
+def getArgs(n,defaultArg):
+    strMap = ""
+    maxArg = len(sys.argv)
+
+    if (maxArg > n): 
+        strMap = sys.argv[n]
+    else: 
+        strMap = defaultArg
 
     return strMap
