@@ -123,7 +123,7 @@ def dataPredictionToString(predictCode):
     if (predictCode == 1):
         strMap = "Normal"
     else:
-        strMap = "Anormaly"
+        strMap = "Anomaly"
 
     return strMap
 
