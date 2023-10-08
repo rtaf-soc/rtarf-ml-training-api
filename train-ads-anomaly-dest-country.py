@@ -49,7 +49,7 @@ if __name__ == "__main__":
     
     countryStr = listOfCountryDst()
     print("-------------- Show Country Not in list --------------")
-    print(df_categories[~df_categories['ads_country_dst'].isin(countryStr)])
+    print(df_categories[~df_categories['ads_country_dst'].isin(countryStr)].value_counts().to_string())
     print("-------------- Show Country Not in list --------------")
 
     df_categories = df_categories.mask(~df_categories.isin(countryStr),'OTHER')
