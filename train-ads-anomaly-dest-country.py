@@ -22,6 +22,7 @@ import sys
 # logger = logging.getLogger(__name__)
 
 jenkinsURL = getArgs(1,"")
+mlflowMinioFolder = getArgs(2,"")
 
 if __name__ == "__main__":
     df = pd.DataFrame()
@@ -97,6 +98,9 @@ if __name__ == "__main__":
 
         mlflow.doctor()
         
+        mlflowMinioFolder
+        mlflow.log_param("MlflowMinioFolder", mlflowMinioFolder)
+
         mlflow.set_tag("JenkinsURL",jenkinsURL)
         mlflow.log_metric("Anomaly", str((countDetect[0])*100/(countDetect[0]+countDetect[1])))
         mlflow.log_metric("Normal", str((countDetect[1])*100/(countDetect[0]+countDetect[1])))
