@@ -86,8 +86,7 @@ if __name__ == "__main__":
     tracking_uri = os.environ["MLFLOW_TRACKING_URI"]
     # export MLFLOW_TRACKING_USERNAME=user 
     # export MLFLOW_TRACKING_PASSWORD=pwd
-    mlflow.set_experiment(experiment_name='ads-anomaly-dest-country')
-    experiment = mlflow.get_experiment_by_name('ads-anomaly-dest-country')
+    experiment = mlflow.set_experiment(experiment_name='ads-anomaly-dest-country')
     experiment_id = experiment.experiment_id
 
     with mlflow.start_run(experiment_id=experiment_id):
