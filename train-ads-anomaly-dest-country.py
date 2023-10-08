@@ -86,7 +86,7 @@ if __name__ == "__main__":
     tracking_uri = os.environ["MLFLOW_TRACKING_URI"]
     # export MLFLOW_TRACKING_USERNAME=user 
     # export MLFLOW_TRACKING_PASSWORD=pwd
-
+    mlflow.set_experiment(experiment_name='ads-anomaly-dest-country')
     experiment = mlflow.get_experiment_by_name('ads-anomaly-dest-country')
     experiment_id = experiment.experiment_id
 
@@ -101,7 +101,7 @@ if __name__ == "__main__":
         mlflow.set_tag("JenkinsURL",jenkinsURL)
         mlflow.log_metric("Anomaly", str((countDetect[0])*100/(countDetect[0]+countDetect[1])))
         mlflow.log_metric("Normal", str((countDetect[1])*100/(countDetect[0]+countDetect[1])))
-        mlflow.sklearn.log_model(lof_detector, "model", registered_model_name="ads-anomaly-by-fest-country")
+        mlflow.sklearn.log_model(lof_detector, "model", registered_model_name="ads-anomaly-by-dest-country")
         print("Model saved in run %s" % mlflow.active_run().info.run_uuid)
 
 

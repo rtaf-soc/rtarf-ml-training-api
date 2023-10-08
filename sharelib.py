@@ -111,7 +111,7 @@ def listOfCountryDst():
     ,'Djibouti','Myanmar','Senegal'
     ,'Montenegro','Guadeloupe','Uzbekistan','Albania','RUnion','Jamaica'
     ,'Brunei Darussalam','Tokelau','Martinique','Haiti','Mongolia','Bouvet Island'
-    ,'Virgin Islands U','Rwanda','Donetsk','Northern Mariana Islands','Nicaragua']
+    ,'Virgin Islands U','Rwanda','Donetsk','Northern Mariana Islands','Nicaragua','Taiwan']
 
     # print(len(countryStr))
 
