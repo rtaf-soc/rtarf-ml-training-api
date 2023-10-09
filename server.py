@@ -79,12 +79,12 @@ def get_MockData():
                         },
                         {
                             "subject": "unsupervised_dst_country_anomaly",
-                            "result": "true",
+                            "result": "Normally", #Anomaly
                             "certainty": 0.99
                         },
                         {
                             "subject": "unsupervised_login_anomaly",
-                            "result": "false",
+                            "result": "Normally", #Anomaly
                             "certainty": 0.99
                         }
                     ]
