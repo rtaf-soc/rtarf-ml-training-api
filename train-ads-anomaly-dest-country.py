@@ -93,9 +93,9 @@ if __name__ == "__main__":
     experiment_id = experiment.experiment_id
 
     run_description = f"""
-    ### Note
-    **All information** * about Training * ~~ML here~~
-    Jenkins URL: [{jenkinsURL}]({jenkinsURL})
+### Note
+**All information** * about Training * ~~ML here~~
+Jenkins URL: [{jenkinsURL}]({jenkinsURL})
     """
 
     with mlflow.start_run(experiment_id=experiment_id,description=run_description):
