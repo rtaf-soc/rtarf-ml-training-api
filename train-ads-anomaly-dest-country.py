@@ -56,8 +56,6 @@ if __name__ == "__main__":
     print(df_categories[~df_categories['ads_country_dst'].isin(countryStr)].value_counts().to_string())
     print("-------------- Show Country Not in list --------------")
 
-    exit
-
     df_categories = df_categories.mask(~df_categories.isin(countryStr),'OTHER')
     X_transform = createXTransformOrdinalDst()
     X = X_transform.transform(df_categories)
