@@ -49,6 +49,9 @@ if __name__ == "__main__":
     df_categories = pd.concat([df_categories["ads_country_dst"]], axis=1, sort=False,)
     
     countryStr = listOfCountryDst()
+    print("-------------- Number of Country in Encoding --------------")
+    print(len(countryStr))
+    print("-------------- Number of Country in Encoding --------------")
     print("-------------- Show Country Not in list --------------")
     print(df_categories[~df_categories['ads_country_dst'].isin(countryStr)].value_counts().to_string())
     print("-------------- Show Country Not in list --------------")
@@ -112,6 +115,7 @@ Jenkins URL: [{jenkinsURL}]({jenkinsURL})
         
         mlflowMinioFolder
         mlflow.log_param("MlflowMinioFolder", mlflowMinioFolder)
+        mlflow.log_param("CountryEncodingAmount", len(countryStr))
 
         # mlflow.set_tag("JenkinsURL",jenkinsURL)
         mlflow.log_metric("Anomaly", str((countDetect[0])*100/(countDetect[0]+countDetect[1])))
