@@ -17,6 +17,7 @@ from pathlib import Path
 import json
 import glob
 import sys
+import pickle
 
 # logging.basicConfig(level=logging.WARN)
 # logger = logging.getLogger(__name__)
@@ -60,6 +61,9 @@ if __name__ == "__main__":
     
     # Call and fit the Local Outlier Factor detector
     lof_detector = LocalOutlierFactor(n_neighbors=10, contamination=0.01,novelty=True).fit(X.values)
+    print("-------------- Model Size (MB) --------------")
+    print("{:.2f}".format(sys.getsizeof(pickle.dumps(lof_detector))/(1024*1024)))
+    print("-------------- Model Size (MB) --------------")
     lof_detect = lof_detector.predict(X)
 
     recordDetect,countDetect = np.unique(lof_detect, return_counts=True)
