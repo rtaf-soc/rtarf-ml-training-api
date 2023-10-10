@@ -116,6 +116,8 @@ Jenkins URL: [{jenkinsURL}]({jenkinsURL})
         mlflowMinioFolder
         mlflow.log_param("MlflowMinioFolder", mlflowMinioFolder)
         mlflow.log_param("CountryEncodingAmount", len(countryStr))
+        mlflow.log_param("SampleFiles", xcount)
+        mlflow.log_param("SampleRows", X.shape[0])
 
         # mlflow.set_tag("JenkinsURL",jenkinsURL)
         mlflow.log_metric("Anomaly", str((countDetect[0])*100/(countDetect[0]+countDetect[1])))
