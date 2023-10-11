@@ -47,7 +47,7 @@ pipeline
                             
                             cmd = "ls ./rawdata/ | wc -l"
                             returnResult = sh(script: cmd, returnStatus: true)
-                            currentBuild.description = "folder:${MLFLOW_MINIO_FOLDER}/${MLFLOW_TRAINING_FILE_LIMIT}/returnResult"
+                            currentBuild.description = "folder:${MLFLOW_MINIO_FOLDER}/${MLFLOW_TRAINING_FILE_LIMIT}/${returnResult}"
                         }                                                                            
                     }
                 }
