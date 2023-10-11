@@ -42,6 +42,8 @@ pipeline
                             sh "mc alias set myminio https://minio.rtarf-prod.its-software-services.com/ ${username} ${password}"
                             sh "mkdir rawdata"
                             
+                            currentBuild.description = "folder:${MLFLOW_MINIO_FOLDER}/${MLFLOW_TRAINING_FILE_LIMIT}"
+
                             sh "mc cp --recursive  myminio/rtarf-ml/${MLFLOW_MINIO_FOLDER}/ ./rawdata/"
                             sh "ls -alrt ./rawdata/"
                         }                                                                            
