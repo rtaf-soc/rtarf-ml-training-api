@@ -114,9 +114,9 @@ def listOfCountryDst():
     ,'Virgin Islands U','Rwanda','Donetsk','Northern Mariana Islands','Nicaragua','Taiwan'
     ,'Benin','Virgin Islands British','Burundi','Netherlands Antilles','Barbados','Belize','Andorra','Ethiopia','Tajikistan'
     ,'Holy See (Vatican City State)','Cayman Islands','French Guiana','Monaco','Somalia','Samoa','Saint Lucia'
-    ,'Saint Kitts And Nevis','Niue','Chad','Marshall Islands','French Polynesia','Madagascar','Jersey',
-    'Anonymous Proxy','Guyana','Guinea','Greenland','Gibraltar','Tuvalu'
-    'Cape Verde','Maldives','Bhutan','Turkmenistan','Mayotte','Sao Tome And Principe','Sierra Leone']
+    ,'Saint Kitts And Nevis','Niue','Chad','Marshall Islands','French Polynesia','Madagascar','Jersey'
+    ,'Anonymous Proxy','Guyana','Guinea','Greenland','Gibraltar','Tuvalu'
+    ,'Cape Verde','Maldives','Bhutan','Turkmenistan','Mayotte','Sao Tome And Principe','Sierra Leone']
     
     # print(len(countryStr))
 
