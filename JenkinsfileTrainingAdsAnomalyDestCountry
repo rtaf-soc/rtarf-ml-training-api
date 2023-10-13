@@ -46,9 +46,9 @@ pipeline
                             sh "ls -alrt ./rawdata/"
                             
                             cmd = "ls ./rawdata/ | wc -l"
-                            returnResult = sh(script: cmd, returnStdout: true)
-                            println("returnResult: ${returnResult}")
-                            currentBuild.description = "folder:${MLFLOW_MINIO_FOLDER}/${MLFLOW_TRAINING_FILE_LIMIT}/${returnResult}"
+                            countFile = sh(script: cmd, returnStdout: true)
+                            println("countFile: ${countFile}")
+                            currentBuild.description = "folder:${MLFLOW_MINIO_FOLDER}/${MLFLOW_TRAINING_FILE_LIMIT}/${countFile}"
                         }                                                                            
                     }
                 }
