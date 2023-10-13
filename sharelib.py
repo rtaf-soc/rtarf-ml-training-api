@@ -126,7 +126,7 @@ def listOfCountryDst():
 def dataPredictionToString(predictCode):
     strMap = ""
     if (predictCode == 1):
-        strMap = "Normal"
+        strMap = "Normally"
     else:
         strMap = "Anomaly"
 

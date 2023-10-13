@@ -14,6 +14,10 @@ app = Flask(__name__)
 # port = os.environ.get('port_ml', '4567')
 host = os.environ.get('host_ml', 'mlflow-app.rtarf-ml.its-software-services.com')
 port = os.environ.get('port_ml', '80')
+
+host_anomaly_des_country = os.environ.get('host_anomaly_des_country', 'mlflow-ads-anomaly-dest-country.rtarf-ml.its-software-services.com')
+port_anomaly_des_country = os.environ.get('port_anomaly_des_country', '80')
+
 gateway_port = os.environ.get('gateway_port_ml', '8082')
 
 def createDataV2(request_country,request_timestamp):
@@ -98,14 +102,10 @@ def get_MockData():
 
 def createDataAdsAnomalyDestCountry(request_country):
     
-    print(request_country)
-    
     test_df = pd.DataFrame([[request_country]],columns=['ads_country_dst'])
     
     test_df['ads_country_dst'] = test_df['ads_country_dst'].mask(~test_df['ads_country_dst'].isin(countryStr),'OTHER')
-    print(test_df)
     X_new = X_transformDataAdsAnomalyDestCountry.transform(test_df)
-    print(X_new.values)
     data = {
         "data":
         X_new.values.tolist()
@@ -115,49 +115,52 @@ def createDataAdsAnomalyDestCountry(request_country):
 
 # This v4 gateway for 4 model serveing 
 @app.route('/v4/gateway', methods=['POST'])
-def get_invocationsDataAdsAnomalyDestCountry():
+def get_invocationsV4():
     headers = {
         "Content-Type": "application/json",
     }
 
+    predictionList = []
     content = request.json
-    request_country = content['ads_country_dst']
-    
-    #if request from start at number refer to ip_address then retuen Normally
 
-    #train-ads-anomaly-dest-country
+    request_country = content['ads_country_dst']
+    #if request from start at number refer to ip_address then retuen Normally
     content_data = createDataAdsAnomalyDestCountry(request_country)
-    print(content_data)
-    # host = "mlflow-ads-anomaly-dest-country.rtarf-ml.its-software-services.com"
-    # port = 80
-    host = "mlflow-ads-anomaly-dest-country.mlflow-ads-anomaly-dest-country.svc.cluster.local"
-    port = 8082
+    # it will get from config map soon
+    # host = "mlflow-ads-anomaly-dest-country.mlflow-ads-anomaly-dest-country.svc.cluster.local"
+    # port = 8082
+
     try:
         resp = requests.post(
-            url="http://%s:%s/invocations" % (host, port),
+            url="http://%s:%s/invocations" % (host_anomaly_des_country, port_anomaly_des_country),
             data=json.dumps({"dataframe_split": content_data}),
             headers=headers,
         )
+        
+        responseData = {
+                            "subject": "unsupervised_dst_country_anomaly",
+                            "result": dataPredictionToString(resp.json()["predictions"][0]) #Anomaly
+                        }
 
-        print(resp.status_code)
-        return resp.json()
-
+        predictionList.append(responseData)
     except Exception as e:
         errmsg = "Caught exception attempting to call model endpoint: %s" % e
         print(errmsg, end="")
         return resp.json()
 
+    
+    responsePredictData = {"results": predictionList}
+    jsonString = jsonify(responsePredictData)
+    return jsonString
+
 @app.route('/v4/country_count', methods=['GET'])
 def getCountryCount():
-    
     data = {"results": len(countryStr)}
-
     jsonString = json.dumps(data, indent=4)
-    
     return jsonString
     
 if __name__ == '__main__':
-    
+    # This pattern of obsolite Due to high startup time
     # df = pd.read_json("data/firewall-traffic.json", lines=True)
     # df_country = df["ads_country_dst"]
     # df_OfficeHour = maskOfficeHour2(df)
@@ -174,6 +177,7 @@ if __name__ == '__main__':
     # enc = OneHotEncoder(handle_unknown='ignore')
     # X_transform = make_column_transformer((enc,['ads_country_dst']),(enc,['is_OfficeHour']))
     # X_transform.fit(df)
+    # This pattern of obsolite Due to high startup time
 
     # load listOfCountryDst since server start    
     countryStr = listOfCountryDst()

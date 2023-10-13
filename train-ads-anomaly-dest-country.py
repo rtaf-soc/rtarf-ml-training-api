@@ -74,10 +74,10 @@ if __name__ == "__main__":
     lof_detect = lof_detector.predict(X)
 
     recordDetect,countDetect = np.unique(lof_detect, return_counts=True)
-    print("--------------Count Anomaly VS Normal-------------")
+    print("--------------Count Anomaly VS Normally-------------")
     print("Anomaly = " , countDetect[0] , "record with " , (countDetect[0])*100/(countDetect[0]+countDetect[1]) ," %")
-    print("Normal  = " , countDetect[1] , "record with " , (countDetect[1])*100/(countDetect[0]+countDetect[1]) ," %")
-    print("--------------Count Anomaly VS Normal-------------")
+    print("Normally  = " , countDetect[1] , "record with " , (countDetect[1])*100/(countDetect[0]+countDetect[1]) ," %")
+    print("--------------Count Anomaly VS Normally-------------")
     
     print("-------------- List Destination Country with Prediction -------------")
     # print(type(df_categories.value_counts()))
@@ -125,7 +125,7 @@ Jenkins URL: [{jenkinsURL}]({jenkinsURL})
 
         # mlflow.set_tag("JenkinsURL",jenkinsURL)
         mlflow.log_metric("Anomaly", str((countDetect[0])*100/(countDetect[0]+countDetect[1])))
-        mlflow.log_metric("Normal", str((countDetect[1])*100/(countDetect[0]+countDetect[1])))
+        mlflow.log_metric("Normally", str((countDetect[1])*100/(countDetect[0]+countDetect[1])))
         mlflow.sklearn.log_model(lof_detector, "model", registered_model_name="ads-anomaly-by-dest-country")
         print("Model saved in run %s" % mlflow.active_run().info.run_uuid)
 
