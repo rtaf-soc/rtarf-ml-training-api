@@ -103,11 +103,12 @@ def createDataAdsAnomalyDestCountry(request_country):
     test_df = pd.DataFrame([[request_country]],columns=['ads_country_dst'])
     
     test_df['ads_country_dst'] = test_df['ads_country_dst'].mask(~test_df['ads_country_dst'].isin(countryStr),'OTHER')
-    
+    print(test_df)
     X_new = X_transformDataAdsAnomalyDestCountry.transform(test_df)
+    print(X_new.values)
     data = {
         "data":
-        X_new.toarray().tolist()
+        X_new.values.tolist()
     }
 
     return data
@@ -126,10 +127,11 @@ def get_invocationsDataAdsAnomalyDestCountry():
 
     #train-ads-anomaly-dest-country
     content_data = createDataAdsAnomalyDestCountry(request_country)
-    host = "mlflow-ads-anomaly-dest-country.rtarf-ml.its-software-services.com"
-    port = 80
-    # host = "mlflow-ads-anomaly-dest-country.mlflow-ads-anomaly-dest-country.svc.cluster.local"
-    # port = 8082
+    print(content_data)
+    # host = "mlflow-ads-anomaly-dest-country.rtarf-ml.its-software-services.com"
+    # port = 80
+    host = "mlflow-ads-anomaly-dest-country.mlflow-ads-anomaly-dest-country.svc.cluster.local"
+    port = 8082
     try:
         resp = requests.post(
             url="http://%s:%s/invocations" % (host, port),
@@ -145,6 +147,15 @@ def get_invocationsDataAdsAnomalyDestCountry():
         print(errmsg, end="")
         return resp.json()
 
+@app.route('/v4/country_count', methods=['GET'])
+def getCountryCount():
+    
+    data = {"results": len(countryStr)}
+
+    jsonString = json.dumps(data, indent=4)
+    
+    return jsonString
+    
 if __name__ == '__main__':
     
     # df = pd.read_json("data/firewall-traffic.json", lines=True)
