@@ -101,8 +101,21 @@
     --data "{\"dataframe_split\": {\"data\":[                      \
         [13.72917 , 100.52389],
 	    [13.12323 , 100.34343]
-	]}}"                                   \
+	]}}"    
+                                   \
     http://127.0.0.1:1236/invocations | jq
+
+    curl -X POST -H "Content-Type:application/json"                     \
+    --data "{\"dataframe_split\": {\"data\":[                      \
+        [ 196 ]
+	]}}"                                   \
+    http://mlflow-ads-anomaly-dest-country.rtarf-ml.its-software-services.com/invocations | jq
+
+    curl -X POST -H "Content-Type:application/json"                     \
+    --data "{\"dataframe_split\": {\"data\":[                      \
+        [ 82 ]
+	]}}"                                   \
+    http://mlflow-ads-anomaly-dest-country.rtarf-ml.its-software-services.com/invocations | jq
 
     curl -X POST -H "Content-Type:application/json"                     \
     --data "{\"dataframe_split\": {\"data\":[[                          \
