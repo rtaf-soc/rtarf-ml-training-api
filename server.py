@@ -94,7 +94,57 @@ def get_MockData():
     
     return jsonString
 
+
+
+def createDataAdsAnomalyDestCountry(request_country):
     
+    print(request_country)
+    
+    test_df = pd.DataFrame([[request_country]],columns=['ads_country_dst'])
+    
+    test_df['ads_country_dst'] = test_df['ads_country_dst'].mask(~test_df['ads_country_dst'].isin(countryStr),'OTHER')
+    
+    X_new = X_transformDataAdsAnomalyDestCountry.transform(test_df)
+    data = {
+        "data":
+        X_new.toarray().tolist()
+    }
+
+    return data
+
+# This v4 gateway for 4 model serveing 
+@app.route('/v4/gateway', methods=['POST'])
+def get_invocationsDataAdsAnomalyDestCountry():
+    headers = {
+        "Content-Type": "application/json",
+    }
+
+    content = request.json
+    request_country = content['ads_country_dst']
+    
+    #if request from start at number refer to ip_address then retuen Normally
+
+    #train-ads-anomaly-dest-country
+    content_data = createDataAdsAnomalyDestCountry(request_country)
+    host = "mlflow-ads-anomaly-dest-country.rtarf-ml.its-software-services.com"
+    port = 80
+    # host = "mlflow-ads-anomaly-dest-country.mlflow-ads-anomaly-dest-country.svc.cluster.local"
+    # port = 8082
+    try:
+        resp = requests.post(
+            url="http://%s:%s/invocations" % (host, port),
+            data=json.dumps({"dataframe_split": content_data}),
+            headers=headers,
+        )
+
+        print(resp.status_code)
+        return resp.json()
+
+    except Exception as e:
+        errmsg = "Caught exception attempting to call model endpoint: %s" % e
+        print(errmsg, end="")
+        return resp.json()
+
 if __name__ == '__main__':
     
     # df = pd.read_json("data/firewall-traffic.json", lines=True)
@@ -113,8 +163,13 @@ if __name__ == '__main__':
     # enc = OneHotEncoder(handle_unknown='ignore')
     # X_transform = make_column_transformer((enc,['ads_country_dst']),(enc,['is_OfficeHour']))
     # X_transform.fit(df)
-    
+
+    # load listOfCountryDst since server start    
+    countryStr = listOfCountryDst()
+
+    X_transformDataAdsAnomalyDestCountry = createXTransformOrdinalDst()
     X_transform = createXTransform()
+
 
     print("Server Ready On Port " + gateway_port)
 
