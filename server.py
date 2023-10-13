@@ -126,9 +126,6 @@ def get_invocationsV4():
     request_country = content['ads_country_dst']
     #if request from start at number refer to ip_address then retuen Normally
     content_data = createDataAdsAnomalyDestCountry(request_country)
-    # it will get from config map soon
-    # host = "mlflow-ads-anomaly-dest-country.mlflow-ads-anomaly-dest-country.svc.cluster.local"
-    # port = 8082
 
     try:
         resp = requests.post(
