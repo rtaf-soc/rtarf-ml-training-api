@@ -81,9 +81,9 @@ if __name__ == "__main__":
     print("--------------Count Anomaly VS Normal-------------")
     # print(lof_detect)
 
-    np.set_printoptions(formatter={'float_kind':'{:f}'.format})
-    print(np.unique(lof_detector.negative_outlier_factor_, return_counts=True))
-    print(lof_detector.negative_outlier_factor_)
+    # np.set_printoptions(formatter={'float_kind':'{:f}'.format})
+    # print(np.unique(lof_detector.negative_outlier_factor_, return_counts=True))
+    # print(lof_detector.negative_outlier_factor_)
 
     print("-------------- List HH with Prediction -------------")
     for index, value in df_categories.value_counts().items():
