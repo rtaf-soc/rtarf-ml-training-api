@@ -59,7 +59,7 @@ if __name__ == "__main__":
     X = df_categories
 
     # Call and fit the Local Outlier Factor detector
-    lof_detector = LocalOutlierFactor(n_neighbors=int((df_categories.shape[0]/70)), contamination=0.1,novelty=True).fit(X.values)
+    lof_detector = LocalOutlierFactor(n_neighbors=int((df_categories.shape[0]/30)), contamination=0.1,novelty=True).fit(X.values)
 
     print("-------------- Model Size (MB) --------------")
     print("{:.2f}".format(sys.getsizeof(pickle.dumps(lof_detector))/(1024*1024)))
