@@ -18,6 +18,9 @@ port = os.environ.get('port_ml', '80')
 host_anomaly_des_country = os.environ.get('host_anomaly_des_country', 'mlflow-ads-anomaly-dest-country.rtarf-ml.its-software-services.com')
 port_anomaly_des_country = os.environ.get('port_anomaly_des_country', '80')
 
+host_anomaly_time = os.environ.get('host_anomaly_time', 'mlflow-ads-anomaly-time.rtarf-ml.its-software-services.com')
+port_anomaly_time = os.environ.get('port_anomaly_time', '80')
+
 gateway_port = os.environ.get('gateway_port_ml', '8082')
 
 def createDataV2(request_country,request_timestamp):
@@ -123,22 +126,32 @@ def get_invocationsV4():
     predictionList = []
     content = request.json
 
-    request_country = content['ads_country_dst']
-    #if request from start at number refer to ip_address then retuen Normally
-    content_data = createDataAdsAnomalyDestCountry(request_country)
-
+    content_data = createDataAdsAnomalyDestCountry(content['ads_country_dst'])
     try:
         resp = requests.post(
             url="http://%s:%s/invocations" % (host_anomaly_des_country, port_anomaly_des_country),
-            data=json.dumps({"dataframe_split": content_data}),
-            headers=headers,
+            data=json.dumps({"dataframe_split": content_data}),headers=headers,
         )
-        
         responseData = {
                             "subject": "unsupervised_dst_country_anomaly",
-                            "result": dataPredictionToString(resp.json()["predictions"][0]) #Anomaly
+                            "result": dataPredictionToString(resp.json()["predictions"][0])
                         }
+        predictionList.append(responseData)
+    except Exception as e:
+        errmsg = "Caught exception attempting to call model endpoint: %s" % e
+        print(errmsg, end="")
+        return resp.json()
 
+    content_data = {"data":[[ content['ads_ts_hh'] ]]}
+    try:
+        resp = requests.post(
+            url="http://%s:%s/invocations" % (host_anomaly_time, port_anomaly_time),
+            data=json.dumps({"dataframe_split": content_data}),headers=headers,
+        )
+        responseData = {
+                            "subject": "unsupervised_login_anomaly",
+                            "result": dataPredictionToString(resp.json()["predictions"][0])
+                        }
         predictionList.append(responseData)
     except Exception as e:
         errmsg = "Caught exception attempting to call model endpoint: %s" % e
