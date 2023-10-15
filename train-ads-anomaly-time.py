@@ -31,7 +31,7 @@ mlflowTrainingFileLimit = int(getArgs(3,10))
 
 if __name__ == "__main__":
     df = pd.DataFrame()
-    path_to_json = 'rawdata6' 
+    path_to_json = 'rawdata' 
     json_pattern = os.path.join(path_to_json,'*.txt')
     file_list = glob.glob(json_pattern)
     
