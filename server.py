@@ -126,37 +126,42 @@ def get_invocationsV4():
     predictionList = []
     content = request.json
 
-    content_data = createDataAdsAnomalyDestCountry(content['ads_country_dst'])
-    try:
-        resp = requests.post(
-            url="http://%s:%s/invocations" % (host_anomaly_des_country, port_anomaly_des_country),
-            data=json.dumps({"dataframe_split": content_data}),headers=headers,
-        )
-        responseData = {
-                            "subject": "unsupervised_dst_country_anomaly",
-                            "result": dataPredictionToString(resp.json()["predictions"][0])
-                        }
-        predictionList.append(responseData)
-    except Exception as e:
-        errmsg = "Caught exception attempting to call model endpoint: %s" % e
-        print(errmsg, end="")
-        return resp.json()
+    runAdsCountryDst = ('disable_predict_anomaly_dest_country' not in content) or (content['disable_predict_anomaly_dest_country'] != 'true')
+    runAdsTime = ('disable_predict_anomaly_time' not in content) or (content['disable_predict_anomaly_time'] != 'true')
+    
+    if (runAdsCountryDst and ('ads_country_dst' in content)):
+        content_data = createDataAdsAnomalyDestCountry(content['ads_country_dst'])
+        try:
+            resp = requests.post(
+                url="http://%s:%s/invocations" % (host_anomaly_des_country, port_anomaly_des_country),
+                data=json.dumps({"dataframe_split": content_data}),headers=headers,
+            )
+            responseData = {
+                                "subject": "unsupervised_dst_country_anomaly",
+                                "result": dataPredictionToString(resp.json()["predictions"][0])
+                            }
+            predictionList.append(responseData)
+        except Exception as e:
+            errmsg = "Caught exception attempting to call model endpoint: %s" % e
+            print(errmsg, end="")
+            return resp.json()
 
-    content_data = {"data":[[ content['ads_ts_hh'] ]]}
-    try:
-        resp = requests.post(
-            url="http://%s:%s/invocations" % (host_anomaly_time, port_anomaly_time),
-            data=json.dumps({"dataframe_split": content_data}),headers=headers,
-        )
-        responseData = {
-                            "subject": "unsupervised_login_anomaly",
-                            "result": dataPredictionToString(resp.json()["predictions"][0])
-                        }
-        predictionList.append(responseData)
-    except Exception as e:
-        errmsg = "Caught exception attempting to call model endpoint: %s" % e
-        print(errmsg, end="")
-        return resp.json()
+    if (runAdsTime and ('ads_ts_hh' in content)):
+        content_data = {"data":[[ content['ads_ts_hh'] ]]}
+        try:
+            resp = requests.post(
+                url="http://%s:%s/invocations" % (host_anomaly_time, port_anomaly_time),
+                data=json.dumps({"dataframe_split": content_data}),headers=headers,
+            )
+            responseData = {
+                                "subject": "unsupervised_login_anomaly",
+                                "result": dataPredictionToString(resp.json()["predictions"][0])
+                            }
+            predictionList.append(responseData)
+        except Exception as e:
+            errmsg = "Caught exception attempting to call model endpoint: %s" % e
+            print(errmsg, end="")
+            return resp.json()
 
     
     responsePredictData = {"results": predictionList}
