@@ -173,6 +173,12 @@ def getCountryCount():
     data = {"results": len(countryStr)}
     jsonString = json.dumps(data, indent=4)
     return jsonString
+
+@app.route('/healthcheck', methods=['GET'])
+def healthcheck():
+    resp = jsonify(message="OK")
+    resp.status_code = 200
+    return resp
     
 if __name__ == '__main__':
     # This pattern of obsolite Due to high startup time
