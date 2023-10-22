@@ -54,47 +54,53 @@ if __name__ == "__main__":
     print(df_categories.value_counts().to_string())
     print("-------------- Count Destination Country --------------")
     
-    countryStr = listOfCountryDst()
+    countryMap = mapOfCountryDst()
     print("-------------- Number of Country in Encoding --------------")
     print(len(countryStr))
     print("-------------- Number of Country in Encoding --------------")
     print("-------------- Show Country Not in list --------------")
-    print(df_categories[~df_categories['ads_country_dst'].isin(countryStr)].value_counts().to_string())
+    print(df_categories[~df_categories['ads_country_dst'].isin(countryMap.keys())].value_counts().to_string())
     print("-------------- Show Country Not in list --------------")
 
-    df_categories = df_categories.mask(~df_categories.isin(countryStr),'OTHER')
-    X_transform = createXTransformOrdinalDst()
-    X = X_transform.transform(df_categories)
+    df_categories = df_categories.mask(~df_categories.isin(countryMap.keys()),'OTHER')
+    X = df_categories.replace({'ads_country_dst': countryMap})
+    print(X)
+    # X_transform = createXTransformOrdinalDst()
+    # X = X_transform.transform(df_categories)
     
     # Call and fit the Local Outlier Factor detector
-    lof_detector = LocalOutlierFactor(n_neighbors=10, contamination=0.01,novelty=True).fit(X.values)
+    lof_detector = LocalOutlierFactor(n_neighbors=int((df_categories.shape[0]/300)), contamination=0.1,novelty=True).fit(X.values)
     print("-------------- Model Size (MB) --------------")
     print("{:.2f}".format(sys.getsizeof(pickle.dumps(lof_detector))/(1024*1024)))
     print("-------------- Model Size (MB) --------------")
     lof_detect = lof_detector.predict(X)
 
     recordDetect,countDetect = np.unique(lof_detect, return_counts=True)
-    print("--------------Count Anomaly VS Normally-------------")
+    print("--------------Count Anomaly VS Normal-------------")
+    print(recordDetect)
+    print(countDetect)
+
+    if (len(countDetect) == 1):
+        row_to_be_added = countDetect
+        countDetect = np.append(np.array([0]),row_to_be_added,axis=0)
+
     print("Anomaly = " , countDetect[0] , "record with " , (countDetect[0])*100/(countDetect[0]+countDetect[1]) ," %")
-    print("Normally  = " , countDetect[1] , "record with " , (countDetect[1])*100/(countDetect[0]+countDetect[1]) ," %")
-    print("--------------Count Anomaly VS Normally-------------")
-    
+    print("Normal  = " , countDetect[1] , "record with " , (countDetect[1])*100/(countDetect[0]+countDetect[1]) ," %")
+    print("--------------Count Anomaly VS Normal-------------")
     print("-------------- List Destination Country with Prediction -------------")
     # print(type(df_categories.value_counts()))
     # print(type(df_categories))
     for index, value in df_categories.value_counts().items():
-        tempdf = pd.DataFrame([
-            [index[0]]
-        ], columns=['ads_country_dst'])
-        encode = X_transform.transform(tempdf)
-        predictData = lof_detector.predict(encode)
-        print(index[0]  , " | code =" , encode.values[0][0] , " | count ="  , value , " | result =" , dataPredictionToString(predictData[0]))
+        encode = countryMap[index[0]]
+        predictData = lof_detector.predict([[ encode ]])
+        print(index[0]  , " | code =" , encode , " | count ="  , value , " | result =" , dataPredictionToString(predictData[0]))
 
     print("-------------- List Destination Country with Prediction -------------")
-
-    plt.figure(figsize=(20,20))
-    plt.scatter(X.to_numpy()[:, 0], X.to_numpy()[:, 0], c=lof_detect, cmap="flag", alpha=0.5)
-    plt.title("LocalOutlierFactor")
+    
+    plt.figure(figsize=(7,7))
+    plt.scatter(X.to_numpy()[:, 0], X.to_numpy()[:, 0], c=lof_detect, cmap="flag", alpha=0.7)
+    plt.title("train-ads-anomaly-dest-country")
+    plt.savefig('train-ads-anomaly-dest-country.png')
     plt.show()
 
     tracking_uri = os.environ["MLFLOW_TRACKING_URI"]
@@ -128,8 +134,3 @@ Jenkins URL: [{jenkinsURL}]({jenkinsURL})
         mlflow.log_metric("Normally", str((countDetect[1])*100/(countDetect[0]+countDetect[1])))
         mlflow.sklearn.log_model(lof_detector, "model", registered_model_name="ads-anomaly-by-dest-country")
         print("Model saved in run %s" % mlflow.active_run().info.run_uuid)
-
-
-    # Plot the conparison between actual and predicted y
-    # df_categories.value_counts()[: :].plot(kind="bar", figsize=(20,20))
-    # plt.show()
