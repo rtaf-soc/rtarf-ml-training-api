@@ -64,7 +64,7 @@ if __name__ == "__main__":
 
     df_categories = df_categories.mask(~df_categories.isin(countryMap.keys()),'OTHER')
     X = df_categories.replace({'ads_country_dst': countryMap})
-    print(X)
+    # print(X)
     # X_transform = createXTransformOrdinalDst()
     # X = X_transform.transform(df_categories)
     
