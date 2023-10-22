@@ -56,7 +56,7 @@ if __name__ == "__main__":
     
     countryMap = mapOfCountryDst()
     print("-------------- Number of Country in Encoding --------------")
-    print(len(countryStr))
+    print(len(countryMap))
     print("-------------- Number of Country in Encoding --------------")
     print("-------------- Show Country Not in list --------------")
     print(df_categories[~df_categories['ads_country_dst'].isin(countryMap.keys())].value_counts().to_string())
@@ -125,7 +125,7 @@ Jenkins URL: [{jenkinsURL}]({jenkinsURL})
         
         mlflowMinioFolder
         mlflow.log_param("MlflowMinioFolder", mlflowMinioFolder)
-        mlflow.log_param("CountryEncodingAmount", len(countryStr))
+        mlflow.log_param("CountryEncodingAmount", len(countryMap))
         mlflow.log_param("SampleFiles", xcount)
         mlflow.log_param("SampleRows", X.shape[0])
 
