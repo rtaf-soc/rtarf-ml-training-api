@@ -42,9 +42,16 @@ pipeline
                             sh "mc alias set myminio https://minio.rtarf-prod.its-software-services.com/ ${username} ${password}"
                             sh "mkdir rawdata"
                             
-                            sh "mc ls myminio/rtarf-ml/${MLFLOW_MINIO_FOLDER}/ --json | jq .key | sed s/\"//g"
+                            cmd = "mc ls myminio/rtarf-ml/${MLFLOW_MINIO_FOLDER}/ --json | jq .key | sed s/\"//g"
+                            listFile = sh(script: cmd, returnStdout: true)
 
-                            sh "mc cp --recursive  myminio/rtarf-ml/${MLFLOW_MINIO_FOLDER}/ ./rawdata/"
+                            def lines = listFile.split('\n')
+                            for (String line: lines)
+                            {
+                                sh "mc cp myminio/rtarf-ml/${MLFLOW_MINIO_FOLDER}/${line} ./rawdata/"
+                            }
+
+                            // sh "mc cp --recursive  myminio/rtarf-ml/${MLFLOW_MINIO_FOLDER}/ ./rawdata/"
                             sh "ls -alrt ./rawdata/"
                             
                             cmd = "ls ./rawdata/ | wc -l"
