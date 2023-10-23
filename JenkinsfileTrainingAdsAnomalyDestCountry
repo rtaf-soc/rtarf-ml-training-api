@@ -66,7 +66,12 @@ pipeline
                     }
                     container("minio-mc") 
                     {
-                        sh "ls -alrt"
+                        withCredentials([usernamePassword(credentialsId: 'AWS_CREDENTIAL', passwordVariable: 'password', usernameVariable: 'username')])     
+                        {
+                            sh "mc alias set ml-minio https://minio-api.rtarf-ml.its-software-services.com/ ${username} ${password}"
+                            
+                            sh "mc cp train-ads-anomaly-dest-country.png ml-minio/ml-report/train-ads-anomaly-dest-country/${env.BUILD_ID}/"
+                        }
                     }
                 }
             }
