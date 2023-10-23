@@ -47,11 +47,12 @@ pipeline
 
                             def lines = listFile.split('\n')
                             def i = 0
+                            def limit = MLFLOW_TRAINING_FILE_LIMIT.trim().toInteger()
                             for (String line: lines)
                             {   
                                 i++
                                 sh "mc cp myminio/rtarf-ml/${MLFLOW_MINIO_FOLDER}/${line} ./rawdata/"
-                                if (i >= MLFLOW_TRAINING_FILE_LIMIT)
+                                if (i >= limit)
                                 {
                                     break
                                 }
