@@ -8,19 +8,13 @@ from sklearn.neighbors import LocalOutlierFactor
 import mlflow
 import mlflow.sklearn
 ########### mflow ############
-
-from sklearn.preprocessing import OrdinalEncoder
-
 from sharelib import *
-# import logging
 from pathlib import Path
 import json
 import glob
 import sys
 import pickle
-
-# logging.basicConfig(level=logging.WARN)
-# logger = logging.getLogger(__name__)
+from IPython.display import HTML
 
 jenkinsURL = getArgs(1,"")
 mlflowMinioFolder = getArgs(2,"")
@@ -106,6 +100,39 @@ if __name__ == "__main__":
     plt.title("train-ads-anomaly-dest-country")
     plt.savefig('train-ads-anomaly-dest-country.png')
     plt.show()
+
+    summary_table_1 = X.describe().to_html()\
+    .replace('<table border="1" class="dataframe">','<table class="table table-striped">') # use bootstrap styling
+    print(summary_table_1)
+
+    summary_table_2 = '''<table class="table table-striped">
+    <th>Ticker</th>
+    <tr>
+        <td><img src="train-ads-anomaly-dest-country.png" alt="train-ads-anomaly-dest-country.png"></td>
+    </tr>
+    </table>
+    '''
+    HTML(summary_table_2)
+    print(summary_table_2)
+
+    html_string = '''
+    <html>
+        <head>
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+            <style>body{ margin:0 100; background:whitesmoke; }</style>
+        </head>
+        <body>
+            <h1></h1>
+            <!-- *** Section 1 *** --->
+            <h2>train-ads-anomaly-dest-country</h2>
+            ''' + summary_table_2 + '''
+            ''' + summary_table_1 + '''
+        </body>
+    </html>'''    
+
+    f = open('report.html','w')
+    f.write(html_string)
+    f.close()
 
     tracking_uri = os.environ["MLFLOW_TRACKING_URI"]
     # export MLFLOW_TRACKING_USERNAME=user 
