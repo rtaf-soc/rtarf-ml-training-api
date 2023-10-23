@@ -14,7 +14,6 @@ import json
 import glob
 import sys
 import pickle
-from IPython.display import HTML
 
 jenkinsURL = getArgs(1,"")
 mlflowMinioFolder = getArgs(2,"")
@@ -112,7 +111,6 @@ if __name__ == "__main__":
     </tr>
     </table>
     '''
-    HTML(summary_table_2)
     print(summary_table_2)
 
     html_string = '''
