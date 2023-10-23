@@ -42,6 +42,8 @@ pipeline
                             sh "mc alias set myminio https://minio.rtarf-prod.its-software-services.com/ ${username} ${password}"
                             sh "mkdir rawdata"
                             
+                            sh "mc ls myminio/rtarf-ml/${MLFLOW_MINIO_FOLDER}/ --json | jq"
+
                             sh "mc cp --recursive  myminio/rtarf-ml/${MLFLOW_MINIO_FOLDER}/ ./rawdata/"
                             sh "ls -alrt ./rawdata/"
                             
