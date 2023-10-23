@@ -46,9 +46,15 @@ pipeline
                             listFile = sh(script: cmd, returnStdout: true)
 
                             def lines = listFile.split('\n')
+                            def i = 0
                             for (String line: lines)
-                            {
+                            {   
+                                i++
                                 sh "mc cp myminio/rtarf-ml/${MLFLOW_MINIO_FOLDER}/${line} ./rawdata/"
+                                if (i >= MLFLOW_TRAINING_FILE_LIMIT)
+                                {
+                                    break
+                                }
                             }
 
                             // sh "mc cp --recursive  myminio/rtarf-ml/${MLFLOW_MINIO_FOLDER}/ ./rawdata/"
