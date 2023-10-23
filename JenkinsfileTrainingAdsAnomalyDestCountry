@@ -64,6 +64,10 @@ pipeline
                     {
                         sh "python -u train-ads-anomaly-dest-country.py ${env.BUILD_URL}console ${MLFLOW_MINIO_FOLDER} ${MLFLOW_TRAINING_FILE_LIMIT}"
                     }
+                    container("minio-mc") 
+                    {
+                        sh "ls -alrt"
+                    }
                 }
             }
         }         
