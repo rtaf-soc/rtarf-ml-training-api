@@ -63,7 +63,9 @@ if __name__ == "__main__":
     print("-------------- Show Country Not in list --------------")
 
     df_categories = df_categories.mask(~df_categories.isin(countryMap.keys()),'OTHER')
+    print("Mask OTHER done")
     X = df_categories.replace({'ads_country_dst': countryMap})
+    print("Frequency encoding done")
     # print(X)
     # X_transform = createXTransformOrdinalDst()
     # X = X_transform.transform(df_categories)
