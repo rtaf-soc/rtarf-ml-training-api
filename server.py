@@ -131,7 +131,7 @@ def get_invocationsV4():
     
     if (runAdsCountryDst and ('ads_country_dst' in content)):
         content_data = createDataAdsAnomalyDestCountry(content['ads_country_dst'])
-        print(content['ads_country_dst'])
+        print(content['ads_country_dst'],"-",content['ads_dst_port'])
         try:
             resp = requests.post(
                 url="http://%s:%s/invocations" % (host_anomaly_des_country, port_anomaly_des_country),
