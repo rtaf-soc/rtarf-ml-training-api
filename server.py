@@ -128,10 +128,12 @@ def get_invocationsV4():
 
     runAdsCountryDst = ('disable_predict_anomaly_dest_country' not in content) or (content['disable_predict_anomaly_dest_country'] != 'true')
     runAdsTime = ('disable_predict_anomaly_time' not in content) or (content['disable_predict_anomaly_time'] != 'true')
-    
+    ads_country_dst_log = ""
+    ads_ts_hh_log = ""
     if (runAdsCountryDst and ('ads_country_dst' in content)):
         content_data = createDataAdsAnomalyDestCountry(content['ads_country_dst'])
-        print(content['ads_country_dst'],"-",content['ads_dst_port'])
+        ads_country_dst_log = "ads_country_dst : ",content['ads_country_dst'],":",content['ads_dst_port']
+        print(ads_country_dst_log)
         try:
             resp = requests.post(
                 url="http://%s:%s/invocations" % (host_anomaly_des_country, port_anomaly_des_country),
@@ -142,7 +144,7 @@ def get_invocationsV4():
                                 "result": dataPredictionToString(resp.json()["predictions"][0])
                             }
             predictionList.append(responseData)
-            print(content['ads_country_dst'],"-",content['ads_dst_port'],"-",resp.status_code)
+            print(ads_country_dst_log,"-",resp.status_code)
         except Exception as e:
             errmsg = "Caught exception attempting to call model endpoint: %s" % e
             print(errmsg, end="")
@@ -150,7 +152,8 @@ def get_invocationsV4():
 
     if (runAdsTime and ('ads_ts_hh' in content)):
         content_data = {"data":[[ content['ads_ts_hh'] ]]}
-        print(content['ads_ts_hh'])
+        ads_ts_hh_log = "ads_ts_hh : ",content['ads_ts_hh']
+        print(ads_ts_hh_log)
         try:
             resp = requests.post(
                 url="http://%s:%s/invocations" % (host_anomaly_time, port_anomaly_time),
@@ -161,7 +164,7 @@ def get_invocationsV4():
                                 "result": dataPredictionToString(resp.json()["predictions"][0])
                             }
             predictionList.append(responseData)
-            print(content['ads_ts_hh'],"-",resp.status_code)
+            print(ads_ts_hh_log,"-",resp.status_code)
         except Exception as e:
             errmsg = "Caught exception attempting to call model endpoint: %s" % e
             print(errmsg, end="")
@@ -170,7 +173,7 @@ def get_invocationsV4():
     
     responsePredictData = {"results": predictionList}
     jsonString = jsonify(responsePredictData)
-    print(responsePredictData)
+    print(ads_country_dst_log,"|", ads_ts_hh_log,"|",responsePredictData)
     return jsonString
 
 @app.route('/v4/country_count', methods=['GET'])
