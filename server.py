@@ -142,6 +142,7 @@ def get_invocationsV4():
                                 "result": dataPredictionToString(resp.json()["predictions"][0])
                             }
             predictionList.append(responseData)
+            print(content['ads_country_dst'],"-",content['ads_dst_port'],"-",resp.status_code)
         except Exception as e:
             errmsg = "Caught exception attempting to call model endpoint: %s" % e
             print(errmsg, end="")
@@ -149,6 +150,7 @@ def get_invocationsV4():
 
     if (runAdsTime and ('ads_ts_hh' in content)):
         content_data = {"data":[[ content['ads_ts_hh'] ]]}
+        print(content['ads_ts_hh'])
         try:
             resp = requests.post(
                 url="http://%s:%s/invocations" % (host_anomaly_time, port_anomaly_time),
@@ -159,6 +161,7 @@ def get_invocationsV4():
                                 "result": dataPredictionToString(resp.json()["predictions"][0])
                             }
             predictionList.append(responseData)
+            print(content['ads_ts_hh'],"-",resp.status_code)
         except Exception as e:
             errmsg = "Caught exception attempting to call model endpoint: %s" % e
             print(errmsg, end="")
@@ -167,6 +170,7 @@ def get_invocationsV4():
     
     responsePredictData = {"results": predictionList}
     jsonString = jsonify(responsePredictData)
+    print(responsePredictData)
     return jsonString
 
 @app.route('/v4/country_count', methods=['GET'])
