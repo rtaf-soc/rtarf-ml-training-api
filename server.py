@@ -101,14 +101,26 @@ def get_MockData():
     
     return jsonString
 
+# def createDataAdsAnomalyDestCountry(request_country):
+    
+#     test_df = pd.DataFrame([[request_country]],columns=['ads_country_dst'])
+    
+#     test_df['ads_country_dst'] = test_df['ads_country_dst'].mask(~test_df['ads_country_dst'].isin(countryStr),'OTHER')
+#     X_new = X_transformDataAdsAnomalyDestCountry.transform(test_df)
+#     data = {
+#         "data":
+#         X_new.values.tolist()
+#     }
 
+#     return data
 
 def createDataAdsAnomalyDestCountry(request_country):
     
     test_df = pd.DataFrame([[request_country]],columns=['ads_country_dst'])
     
-    test_df['ads_country_dst'] = test_df['ads_country_dst'].mask(~test_df['ads_country_dst'].isin(countryStr),'OTHER')
-    X_new = X_transformDataAdsAnomalyDestCountry.transform(test_df)
+    test_df['ads_country_dst'] = test_df['ads_country_dst'].mask(~test_df['ads_country_dst'].isin(countryMap.keys()),'OTHER')
+    X_new = test_df.replace({'ads_country_dst': countryMap})
+
     data = {
         "data":
         X_new.values.tolist()
@@ -133,6 +145,7 @@ def get_invocationsV4():
     foundFlag = False
     if (runAdsCountryDst and ('ads_country_dst' in content)):
         content_data = createDataAdsAnomalyDestCountry(content['ads_country_dst'])
+        print(content_data)
         ads_country_dst_log = "ads_country_dst : ",content['ads_country_dst'],":",content['ads_dst_port']
         print(ads_country_dst_log)
         foundFlag = True
@@ -214,12 +227,13 @@ if __name__ == '__main__':
     # This pattern of obsolite Due to high startup time
 
     # load listOfCountryDst since server start    
-    countryStr = listOfCountryDst()
-
-    X_transformDataAdsAnomalyDestCountry = createXTransformOrdinalDst()
-    X_transform = createXTransform()
+    # countryStr = listOfCountryDst()
+    countryMap = mapOfCountryDst()
 
 
+    # X_transformDataAdsAnomalyDestCountry = createXTransformOrdinalDst()
+    # X_transform = createXTransform()
+    
     print("Server Ready On Port " + gateway_port)
 
     serve(app, host="0.0.0.0", port=gateway_port)
