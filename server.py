@@ -130,10 +130,12 @@ def get_invocationsV4():
     runAdsTime = ('disable_predict_anomaly_time' not in content) or (content['disable_predict_anomaly_time'] != 'true')
     ads_country_dst_log = ""
     ads_ts_hh_log = ""
+    foundFlag = False
     if (runAdsCountryDst and ('ads_country_dst' in content)):
         content_data = createDataAdsAnomalyDestCountry(content['ads_country_dst'])
         ads_country_dst_log = "ads_country_dst : ",content['ads_country_dst'],":",content['ads_dst_port']
         print(ads_country_dst_log)
+        foundFlag = True
         try:
             resp = requests.post(
                 url="http://%s:%s/invocations" % (host_anomaly_des_country, port_anomaly_des_country),
@@ -154,6 +156,7 @@ def get_invocationsV4():
         content_data = {"data":[[ content['ads_ts_hh'] ]]}
         ads_ts_hh_log = "ads_ts_hh : ",content['ads_ts_hh']
         print(ads_ts_hh_log)
+        foundFlag = True
         try:
             resp = requests.post(
                 url="http://%s:%s/invocations" % (host_anomaly_time, port_anomaly_time),
@@ -170,7 +173,9 @@ def get_invocationsV4():
             print(errmsg, end="")
             return resp.json()
 
-    
+    if (not foundFlag):
+        print("request not invocate all ml")
+
     responsePredictData = {"results": predictionList}
     jsonString = jsonify(responsePredictData)
     print(ads_country_dst_log,"|", ads_ts_hh_log,"|",responsePredictData)
