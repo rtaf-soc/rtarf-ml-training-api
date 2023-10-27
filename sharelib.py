@@ -77,12 +77,12 @@ def createXTransformOrdinalDst():
 
 def listOfCountryDst():
 
-    countryStr = ['United States','Thailand','Singapore','Kenya'
-    ,'Spain','Japan','Netherlands','China'
+    countryStr = ['United States','Thailand','10.0.0.0-10.255.255.255','Singapore','Kenya'
+    ,'Spain','Japan','Netherlands','China','192.168.0.0-192.168.255.255'
     ,'France','Colombia','European Union','Sweden','Germany','Taiwan ROC'
     ,'Saudi Arabia','India','Canada','Denmark','Italy','Brazil','Indonesia'
-    ,'Finland','Hong Kong','Austria','Tunisia'
-    ,'Portugal','Russian Federation','Pakistan'
+    ,'Finland','100.64.0.0-100.127.255.255','Hong Kong','Austria','Tunisia'
+    ,'172.16.0.0-172.31.255.255','Portugal','Russian Federation','Pakistan'
     ,'Korea Republic Of','Belgium','United Kingdom','Asia Pacific Region'
     ,'Argentina','South Africa','Australia','Bulgaria','Morocco','Ireland'
     ,'Greece','Azerbaijan','Hungary','Venezuela Bolivarian Republic Of'
@@ -95,7 +95,7 @@ def listOfCountryDst():
     ,'Lithuania','Romania','San Marino','New Caledonia','Costa Rica','Latvia'
     ,'Zambia','New Zealand','Dominican Republic','Moldova Republic Of','Peru'
     ,'Algeria','Iceland','Luxembourg','Turks And Caicos Islands'
-    ,'Ecuador','Kyrgyzstan','Kiribati','Belarus'
+    ,'169.254.0.0-169.254.255.255','Ecuador','Kyrgyzstan','Kiribati','Belarus'
     ,'Serbia','Bermuda','Bolivia Plurinational State Of','Uruguay'
     ,'Trinidad And Tobago','Antigua And Barbuda','Fiji','Bangladesh'
     ,'Palestinian Territory Occupied','Swaziland','Syrian Arab Republic'
@@ -117,6 +117,7 @@ def listOfCountryDst():
     ,'Saint Kitts And Nevis','Niue','Chad','Marshall Islands','French Polynesia','Madagascar','Jersey'
     ,'Anonymous Proxy','Guyana','Guinea','Greenland','Gibraltar','Tuvalu'
     ,'Cape Verde','Maldives','Bhutan','Turkmenistan','Mayotte','Sao Tome And Principe','Sierra Leone']
+    
     
     # print(len(countryStr))
 
