@@ -195,7 +195,7 @@ def get_invocationsV4():
     return jsonString
 
 @app.route('/v4/country_count', methods=['GET'])
-def getCountryCount2():
+def getCountryCount():
     data = {"results": len(countryMap.values())}
     jsonString = json.dumps(data, indent=4)
     return jsonString
