@@ -354,6 +354,7 @@ def mapOfCountryDst():
     , 'Central African Republic': 221
     , 'Guernsey': 222
     , 'Dominica': 223
+    , 'Vanuatu': 224
     , 'OTHER': 250
     }
 
