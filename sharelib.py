@@ -266,6 +266,7 @@ def mapOfCountryDst():
     , 'Cayman Islands': 134
     , 'Ethiopia': 135
     , 'Congo The Democratic Republic Of The': 136
+    , 'Congo': 136
     , 'Namibia': 137
     , 'Maldives': 138
     , 'Isle Of Man': 139
@@ -337,7 +338,23 @@ def mapOfCountryDst():
     , 'Virgin Islands U': 205
     , 'Northern Mariana Islands': 206
     , 'Burundi': 207
-    , 'OTHER': 207
+    , 'Timor-Leste': 208
+    , 'Liberia': 209
+    , 'Mali': 210
+    , 'Lesotho': 211
+    , 'Curacao': 212
+    , 'Equatorial Guinea': 213
+    , 'Faroe Islands': 214
+    , 'Niger': 215
+    , 'Solomon Islands': 216
+    , 'Sint Maarten (Dutch Part)': 217
+    , 'Saint Martin (French Part)': 218
+    , 'Bonaire Saint Eustatius And Saba': 219
+    , 'Mauritania': 220
+    , 'Central African Republic': 221
+    , 'Guernsey': 222
+    , 'Dominica': 223
+    , 'OTHER': 250
     }
 
     return countryStr
