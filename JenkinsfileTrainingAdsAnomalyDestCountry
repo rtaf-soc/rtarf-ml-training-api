@@ -7,6 +7,32 @@ pipeline
     {
         node 
         {
+            label "jenkins-production-jenkins-agent"
+        }       
+    }
+    stages
+    {
+        
+        stage('Docker') 
+        { 
+            steps 
+            {
+                script 
+                {
+                    container("dind") 
+                    {
+                        sh "docker images"                                                                    
+                    }
+                }
+            }
+        }
+    }
+
+
+    agent 
+    {
+        node 
+        {
             label "jenkins-python"
         }       
     }
