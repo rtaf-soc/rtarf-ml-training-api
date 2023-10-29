@@ -1,34 +1,30 @@
 MLFLOW_MINIO_FOLDER=env.MLFLOW_MINIO_FOLDER
 MLFLOW_TRAINING_FILE_LIMIT=env.MLFLOW_TRAINING_FILE_LIMIT
 
-pipeline 
+agent 
 {
-    agent 
+    node 
     {
-        node 
-        {
-            label "jenkins-production-jenkins-agent"
-        }       
+        label "jenkins-production-jenkins-agent"
     }
-    stages
-    {
-        
-        stage('Docker') 
-        { 
-            steps 
+
+    stage('Docker') 
+    { 
+        steps 
+        {
+            script 
             {
-                script 
+                container("dind") 
                 {
-                    container("dind") 
-                    {
-                        sh "docker images"                                                                    
-                    }
+                    sh "docker images"                                                                    
                 }
             }
         }
-    }
+    }       
+}
 
-
+pipeline 
+{
     agent 
     {
         node 
