@@ -147,8 +147,7 @@ Jenkins URL: [{jenkinsURL}]({jenkinsURL})
 
     with mlflow.start_run(experiment_id=experiment_id,description=run_description):
         mlflow.set_tracking_uri(tracking_uri)
-        mlflow.MLFLOW_ARTIFACT_UPLOAD_DOWNLOAD_TIMEOUT(6000)
-        
+
         print("Artifact Location: {}".format(experiment.artifact_location))
         print("artifact uri : " + mlflow.get_artifact_uri())
 
