@@ -41,6 +41,7 @@ pipeline
                         {
                             sh "mc alias set myminio https://minio.rtarf-prod.its-software-services.com/ ${username} ${password}"
                             sh "mkdir rawdata"
+                            sh "mkdir images"
                             
                             cmd = """mc ls myminio/rtarf-ml/${MLFLOW_MINIO_FOLDER}/ --json | jq .key | sed 's/"//g'"""
                             listFile = sh(script: cmd, returnStdout: true)
