@@ -3,6 +3,7 @@ import pandas as pd
 import os
 import matplotlib.pyplot as plt
 from sklearn.neighbors import LocalOutlierFactor
+from sklearn import metrics
 
 ########### mflow ############
 import mlflow
@@ -60,9 +61,9 @@ if __name__ == "__main__":
     print("Mask OTHER done")
     X = df_categories.replace({'ads_country_dst': countryMap})
     print("Frequency encoding done")
-    # print(X)
-    # X_transform = createXTransformOrdinalDst()
-    # X = X_transform.transform(df_categories)
+    
+    X_Test = X.mask(X <= 20, 1)
+    X_Test.mask(X_Test > 20, -1,inplace=True)
     
     # Call and fit the Local Outlier Factor detector
     setNNeighbors = int((df_categories.shape[0]/300)) #This is best scenario but memory 64GB still OMM killed
@@ -101,6 +102,23 @@ if __name__ == "__main__":
     plt.savefig('train-ads-anomaly-dest-country.png')
     plt.show()
 
+    Accuracy = metrics.accuracy_score(X_Test, lof_detect)
+    print("Accuracy : " , Accuracy)
+    Precision = metrics.precision_score(X_Test, lof_detect)
+    print("Precision : " , Precision)
+    Sensitivity_recall = metrics.recall_score(X_Test, lof_detect)
+    print("Sensitivity_recall : " , Sensitivity_recall)
+    Specificity = metrics.recall_score(X_Test, lof_detect, pos_label=-1)
+    print("Specificity : " , Specificity)
+    F1_score = metrics.f1_score(X_Test, lof_detect)
+    print("F1_score : " , F1_score)
+
+    confusion_matrix = metrics.confusion_matrix(X_Test, lof_detect)
+    cm_display = metrics.ConfusionMatrixDisplay(confusion_matrix = confusion_matrix, display_labels = ["Anomally", "Normally"])
+    cm_display.plot()
+    plt.savefig('train-ads-anomaly-dest-country-confusion-matrix.png')
+    plt.show()
+    
     summary_table_1 = X.describe().to_html()\
     .replace('<table border="1" class="dataframe">','<table class="table table-striped">') # use bootstrap styling
     print(summary_table_1)
@@ -109,6 +127,9 @@ if __name__ == "__main__":
     <th>Ticker</th>
     <tr>
         <td><img src="train-ads-anomaly-dest-country.png" alt="train-ads-anomaly-dest-country.png"></td>
+    </tr>
+    <tr>
+        <td><img src="train-ads-anomaly-dest-country-confusion-matrix.png" alt="confusion-matrix"></td>
     </tr>
     </table>
     '''
