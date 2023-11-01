@@ -99,7 +99,7 @@ if __name__ == "__main__":
     plt.figure(figsize=(7,7))
     plt.scatter(X.to_numpy()[:, 0], X.to_numpy()[:, 0], c=lof_detect, cmap="flag", alpha=0.7)
     plt.title("train-ads-anomaly-dest-country")
-    plt.savefig('train-ads-anomaly-dest-country.png')
+    plt.savefig('images/train-ads-anomaly-dest-country.png')
     plt.show()
 
     Accuracy = metrics.accuracy_score(X_Test, lof_detect)
@@ -116,7 +116,7 @@ if __name__ == "__main__":
     confusion_matrix = metrics.confusion_matrix(X_Test, lof_detect)
     cm_display = metrics.ConfusionMatrixDisplay(confusion_matrix = confusion_matrix, display_labels = ["Anomally", "Normally"])
     cm_display.plot()
-    plt.savefig('train-ads-anomaly-dest-country-confusion-matrix.png')
+    plt.savefig('images/train-ads-anomaly-dest-country-confusion-matrix.png')
     plt.show()
     
     summary_table_1 = X.describe().to_html()\
