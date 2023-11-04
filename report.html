@@ -3,69 +3,55 @@
     <head>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
         <style>body{ margin:0 100; background:whitesmoke; }</style>
+        <style>
+            .right-aligned {
+                text-align: right;
+                padding-right: 10px; /* เพิ่มระยะห่างด้านขวาเพื่อให้มีพื้นที่ว่างก่อนเครื่องหมายจุล */
+            }
+        </style>
     </head>
     <body>
-        <h1></h1>
-
-        <!-- *** Section 1 *** --->
+        <h1>Report</h1>
         <h2>train-ads-anomaly-dest-country</h2>
-        <iframe width="1000" height="550" frameborder="0" seamless="seamless" scrolling="no" src="first_plot_url +.embed?width=800&height=550"></iframe>
-        <p>Apple stock price rose steadily through 2014.</p>
         
-        <!-- *** Section 2 *** --->
-        <h2>Section 2: AAPL compared to other 2014 stocks</h2>
-        <iframe width="1000" height="1000" frameborder="0" seamless="seamless" scrolling="no" src="second_plot_url.embed?width=1000&height=1000"></iframe>
-        <p>aaa</p>
-        <h3>bbbb</h3>
-        <table class="table table-striped">
-<th>Ticker</th>
+<p>Count Record : 63499</p>
+<h2>Local Outlier Factor (LOF)</h2>
+<p>n_neighbors : 21</p>
+
+<table class="table table-striped">
+    <th>Type</th><th class=right-aligned>Record</th><th class=right-aligned>%Record</th>
+    <tr><td>Anomaly</td><td class=right-aligned>140</td><td class=right-aligned> 0.22047591300650404</td></tr>
+    <tr><td>Normal</td><td class=right-aligned>63359</td><td class=right-aligned> 99.77952408699349</td></tr>
+</table>
+
+
+<table class="table table-striped">
+    <th>Country</th><th class=right-aligned>CODE</th><th class=right-aligned>Amount</th><th>Prediction</th>
+    <tr><td>United States</td><td class=right-aligned>0</td><td class=right-aligned>28464</td><td>Normally</td><tr><tr><td>Austria</td><td class=right-aligned>1</td><td class=right-aligned>11810</td><td>Normally</td><tr><tr><td>Thailand</td><td class=right-aligned>2</td><td class=right-aligned>9078</td><td>Normally</td><tr><tr><td>Brazil</td><td class=right-aligned>3</td><td class=right-aligned>3333</td><td>Normally</td><tr><tr><td>China</td><td class=right-aligned>4</td><td class=right-aligned>2108</td><td>Normally</td><tr><tr><td>Netherlands</td><td class=right-aligned>5</td><td class=right-aligned>1574</td><td>Normally</td><tr><tr><td>Japan</td><td class=right-aligned>7</td><td class=right-aligned>987</td><td>Normally</td><tr><tr><td>Singapore</td><td class=right-aligned>6</td><td class=right-aligned>929</td><td>Normally</td><tr><tr><td>Sweden</td><td class=right-aligned>8</td><td class=right-aligned>818</td><td>Normally</td><tr><tr><td>Australia</td><td class=right-aligned>10</td><td class=right-aligned>677</td><td>Normally</td><tr><tr><td>United Kingdom</td><td class=right-aligned>9</td><td class=right-aligned>573</td><td>Normally</td><tr><tr><td>Asia Pacific Region</td><td class=right-aligned>11</td><td class=right-aligned>368</td><td>Normally</td><tr><tr><td>Canada</td><td class=right-aligned>16</td><td class=right-aligned>349</td><td>Normally</td><tr><tr><td>Russian Federation</td><td class=right-aligned>12</td><td class=right-aligned>337</td><td>Normally</td><tr><tr><td>Korea Republic Of</td><td class=right-aligned>14</td><td class=right-aligned>240</td><td>Normally</td><tr><tr><td>Hong Kong</td><td class=right-aligned>15</td><td class=right-aligned>208</td><td>Normally</td><tr><tr><td>Malaysia</td><td class=right-aligned>13</td><td class=right-aligned>200</td><td>Normally</td><tr><tr><td>Germany</td><td class=right-aligned>17</td><td class=right-aligned>161</td><td>Normally</td><tr><tr><td>France</td><td class=right-aligned>19</td><td class=right-aligned>144</td><td>Normally</td><tr><tr><td>Slovakia</td><td class=right-aligned>21</td><td class=right-aligned>142</td><td>Normally</td><tr><tr><td>India</td><td class=right-aligned>18</td><td class=right-aligned>123</td><td>Normally</td><tr><tr><td>Italy</td><td class=right-aligned>20</td><td class=right-aligned>116</td><td>Normally</td><tr><tr><td>European Union</td><td class=right-aligned>22</td><td class=right-aligned>97</td><td>Normally</td><tr><tr><td>Norway</td><td class=right-aligned>23</td><td class=right-aligned>72</td><td>Normally</td><tr><tr><td>Spain</td><td class=right-aligned>26</td><td class=right-aligned>53</td><td>Normally</td><tr><tr><td>Israel</td><td class=right-aligned>27</td><td class=right-aligned>49</td><td>Normally</td><tr><tr><td>South Africa</td><td class=right-aligned>30</td><td class=right-aligned>46</td><td>Normally</td><tr><tr><td>Switzerland</td><td class=right-aligned>29</td><td class=right-aligned>40</td><td>Normally</td><tr><tr><td>Ireland</td><td class=right-aligned>24</td><td class=right-aligned>38</td><td>Normally</td><tr><tr><td>Luxembourg</td><td class=right-aligned>34</td><td class=right-aligned>27</td><td>Normally</td><tr><tr><td>Taiwan</td><td class=right-aligned>28</td><td class=right-aligned>26</td><td>Normally</td><tr><tr><td>Finland</td><td class=right-aligned>39</td><td class=right-aligned>21</td><td>Normally</td><tr><tr><td>Indonesia</td><td class=right-aligned>25</td><td class=right-aligned>17</td><td>Anomaly</td><tr><tr><td>Philippines</td><td class=right-aligned>53</td><td class=right-aligned>15</td><td>Normally</td><tr><tr><td>Belgium</td><td class=right-aligned>37</td><td class=right-aligned>14</td><td>Normally</td><tr><tr><td>Mauritius</td><td class=right-aligned>61</td><td class=right-aligned>14</td><td>Normally</td><tr><tr><td>Tokelau</td><td class=right-aligned>55</td><td class=right-aligned>14</td><td>Anomaly</td><tr><tr><td>Poland</td><td class=right-aligned>36</td><td class=right-aligned>14</td><td>Normally</td><tr><tr><td>Slovenia</td><td class=right-aligned>40</td><td class=right-aligned>12</td><td>Normally</td><tr><tr><td>Uruguay</td><td class=right-aligned>42</td><td class=right-aligned>10</td><td>Normally</td><tr><tr><td>Argentina</td><td class=right-aligned>41</td><td class=right-aligned>9</td><td>Normally</td><tr><tr><td>Saudi Arabia</td><td class=right-aligned>50</td><td class=right-aligned>9</td><td>Normally</td><tr><tr><td>Colombia</td><td class=right-aligned>49</td><td class=right-aligned>8</td><td>Normally</td><tr><tr><td>Egypt</td><td class=right-aligned>46</td><td class=right-aligned>8</td><td>Anomaly</td><tr><tr><td>Iran Islamic Republic Of</td><td class=right-aligned>35</td><td class=right-aligned>7</td><td>Anomaly</td><tr><tr><td>Cape Verde</td><td class=right-aligned>121</td><td class=right-aligned>7</td><td>Normally</td><tr><tr><td>Mexico</td><td class=right-aligned>38</td><td class=right-aligned>7</td><td>Normally</td><tr><tr><td>Chile</td><td class=right-aligned>57</td><td class=right-aligned>6</td><td>Anomaly</td><tr><tr><td>Czech Republic</td><td class=right-aligned>43</td><td class=right-aligned>5</td><td>Anomaly</td><tr><tr><td>Denmark</td><td class=right-aligned>52</td><td class=right-aligned>5</td><td>Anomaly</td><tr><tr><td>Viet Nam</td><td class=right-aligned>31</td><td class=right-aligned>5</td><td>Anomaly</td><tr><tr><td>Bangladesh</td><td class=right-aligned>64</td><td class=right-aligned>5</td><td>Anomaly</td><tr><tr><td>Lithuania</td><td class=right-aligned>74</td><td class=right-aligned>5</td><td>Normally</td><tr><tr><td>Morocco</td><td class=right-aligned>54</td><td class=right-aligned>4</td><td>Anomaly</td><tr><tr><td>Palestinian Territory Occupied</td><td class=right-aligned>87</td><td class=right-aligned>4</td><td>Anomaly</td><tr><tr><td>Seychelles</td><td class=right-aligned>80</td><td class=right-aligned>4</td><td>Normally</td><tr><tr><td>Unknown</td><td class=right-aligned>59</td><td class=right-aligned>4</td><td>Anomaly</td><tr><tr><td>Bulgaria</td><td class=right-aligned>65</td><td class=right-aligned>4</td><td>Anomaly</td><tr><tr><td>Turkey</td><td class=right-aligned>32</td><td class=right-aligned>4</td><td>Anomaly</td><tr><tr><td>Afghanistan</td><td class=right-aligned>126</td><td class=right-aligned>4</td><td>Normally</td><tr><tr><td>Nicaragua</td><td class=right-aligned>129</td><td class=right-aligned>3</td><td>Normally</td><tr><tr><td>Cambodia</td><td class=right-aligned>73</td><td class=right-aligned>3</td><td>Anomaly</td><tr><tr><td>Bahrain</td><td class=right-aligned>72</td><td class=right-aligned>3</td><td>Anomaly</td><tr><tr><td>Algeria</td><td class=right-aligned>78</td><td class=right-aligned>3</td><td>Normally</td><tr><tr><td>Ecuador</td><td class=right-aligned>81</td><td class=right-aligned>3</td><td>Normally</td><tr><tr><td>Portugal</td><td class=right-aligned>67</td><td class=right-aligned>3</td><td>Anomaly</td><tr><tr><td>New Zealand</td><td class=right-aligned>56</td><td class=right-aligned>3</td><td>Anomaly</td><tr><tr><td>Bouvet Island</td><td class=right-aligned>119</td><td class=right-aligned>3</td><td>Normally</td><tr><tr><td>Costa Rica</td><td class=right-aligned>83</td><td class=right-aligned>2</td><td>Anomaly</td><tr><tr><td>Greece</td><td class=right-aligned>44</td><td class=right-aligned>2</td><td>Anomaly</td><tr><tr><td>Hungary</td><td class=right-aligned>47</td><td class=right-aligned>2</td><td>Anomaly</td><tr><tr><td>Iceland</td><td class=right-aligned>86</td><td class=right-aligned>2</td><td>Anomaly</td><tr><tr><td>RUnion</td><td class=right-aligned>128</td><td class=right-aligned>2</td><td>Normally</td><tr><tr><td>Romania</td><td class=right-aligned>51</td><td class=right-aligned>2</td><td>Anomaly</td><tr><tr><td>Bolivia Plurinational State Of</td><td class=right-aligned>120</td><td class=right-aligned>2</td><td>Normally</td><tr><tr><td>Kenya</td><td class=right-aligned>71</td><td class=right-aligned>2</td><td>Anomaly</td><tr><tr><td>Ukraine</td><td class=right-aligned>45</td><td class=right-aligned>2</td><td>Anomaly</td><tr><tr><td>Pakistan</td><td class=right-aligned>48</td><td class=right-aligned>2</td><td>Anomaly</td><tr><tr><td>Sudan</td><td class=right-aligned>91</td><td class=right-aligned>1</td><td>Anomaly</td><tr><tr><td>Tunisia</td><td class=right-aligned>63</td><td class=right-aligned>1</td><td>Anomaly</td><tr><tr><td>United Arab Emirates</td><td class=right-aligned>70</td><td class=right-aligned>1</td><td>Anomaly</td><tr><tr><td>Virgin Islands British</td><td class=right-aligned>103</td><td class=right-aligned>1</td><td>Anomaly</td><tr><tr><td>Venezuela Bolivarian Republic Of</td><td class=right-aligned>66</td><td class=right-aligned>1</td><td>Anomaly</td><tr><tr><td>Lao Peoples Democratic Republic</td><td class=right-aligned>33</td><td class=right-aligned>1</td><td>Anomaly</td><tr><tr><td>Serbia</td><td class=right-aligned>69</td><td class=right-aligned>1</td><td>Anomaly</td><tr><tr><td>Gambia</td><td class=right-aligned>131</td><td class=right-aligned>1</td><td>Anomaly</td><tr><tr><td>Angola</td><td class=right-aligned>115</td><td class=right-aligned>1</td><td>Anomaly</td><tr><tr><td>Belarus</td><td class=right-aligned>95</td><td class=right-aligned>1</td><td>Anomaly</td><tr><tr><td>Benin</td><td class=right-aligned>164</td><td class=right-aligned>1</td><td>Anomaly</td><tr><tr><td>Croatia</td><td class=right-aligned>85</td><td class=right-aligned>1</td><td>Anomaly</td><tr><tr><td>Estonia</td><td class=right-aligned>82</td><td class=right-aligned>1</td><td>Normally</td><tr><tr><td>Ethiopia</td><td class=right-aligned>135</td><td class=right-aligned>1</td><td>Anomaly</td><tr><tr><td>Guam</td><td class=right-aligned>149</td><td class=right-aligned>1</td><td>Anomaly</td><tr><tr><td>Senegal</td><td class=right-aligned>125</td><td class=right-aligned>1</td><td>Normally</td><tr><tr><td>Kuwait</td><td class=right-aligned>92</td><td class=right-aligned>1</td><td>Anomaly</td><tr><tr><td>Moldova Republic Of</td><td class=right-aligned>58</td><td class=right-aligned>1</td><td>Anomaly</td><tr><tr><td>Panama</td><td class=right-aligned>76</td><td class=right-aligned>1</td><td>Normally</td><tr><tr><td>Peru</td><td class=right-aligned>90</td><td class=right-aligned>1</td><td>Anomaly</td><tr><tr><td>Puerto Rico</td><td class=right-aligned>96</td><td class=right-aligned>1</td><td>Anomaly</td><tr><tr><td>Qatar</td><td class=right-aligned>101</td><td class=right-aligned>1</td><td>Anomaly</td><tr><tr><td>Zambia</td><td class=right-aligned>114</td><td class=right-aligned>1</td><td>Anomaly</td><tr>
+</table>
+
+<table class="table table-striped">
+<th>Local Outlier Factor (LOF)</th>
 <tr>
     <td><img src="train-ads-anomaly-dest-country.png" alt="train-ads-anomaly-dest-country.png"></td>
 </tr>
+    </table>
+<table class="table table-striped">
+<th>confusion-matrix</th>
+<tr>
+    <td><img src="train-ads-anomaly-dest-country-confusion-matrix.png" alt="confusion-matrix"></td>
+</tr>
 </table>
 
-        <h3>cccc</h3>
-        <table class="table table-striped">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>ads_country_dst</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>count</th>
-      <td>63499.000000</td>
-    </tr>
-    <tr>
-      <th>mean</th>
-      <td>2.400432</td>
-    </tr>
-    <tr>
-      <th>std</th>
-      <td>5.811770</td>
-    </tr>
-    <tr>
-      <th>min</th>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>25%</th>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>50%</th>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>75%</th>
-      <td>2.000000</td>
-    </tr>
-    <tr>
-      <th>max</th>
-      <td>164.000000</td>
-    </tr>
-  </tbody>
+<table class="table table-striped">
+    <th>Type</th><th>Meaning</th><th class=right-aligned>Score</th>
+    <tr><td>Accuracy</td><td>The proportion of correctly predicted cases</td><td class=right-aligned>0.987999811020646</td></tr>
+    <tr><td>Precision</td><td>Positive Predictive Value</td><td class=right-aligned>0.9879732950330655</td></tr>
+    <tr><td>Sensitivity_recall</td><td> True Positive Rate</td><td class=right-aligned>1.0</td></tr>
+    <tr><td>Specificity</td><td>True Negative Rate</td><td class=right-aligned>0.15521064301552107</td></tr>
+    <tr><td>F1_score</td><td>Balances precision and recall</td><td class=right-aligned>0.993950268347677</td></tr>    
 </table>
+
+
     </body>
 </html>

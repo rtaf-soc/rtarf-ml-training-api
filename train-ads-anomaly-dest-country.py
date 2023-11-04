@@ -10,6 +10,7 @@ import mlflow
 import mlflow.sklearn
 ########### mflow ############
 from sharelib import *
+from report import *
 from pathlib import Path
 import json
 import glob
@@ -85,15 +86,30 @@ if __name__ == "__main__":
 
     print("Anomaly = " , countDetect[0] , "record with " , (countDetect[0])*100/(countDetect[0]+countDetect[1]) ," %")
     print("Normal  = " , countDetect[1] , "record with " , (countDetect[1])*100/(countDetect[0]+countDetect[1]) ," %")
+    htmlAnomalyVSNormally = '''
+    <table class="table table-striped">
+        <th>Type</th><th class=right-aligned>Record</th><th class=right-aligned>%Record</th>
+        <tr><td>Anomaly</td><td class=right-aligned>''' + str(countDetect[0]) + '''</td><td class=right-aligned> ''' + str((countDetect[0])*100/(countDetect[0]+countDetect[1])) + '''</td></tr>
+        <tr><td>Normal</td><td class=right-aligned>''' + str(countDetect[1]) + '''</td><td class=right-aligned> ''' + str((countDetect[1])*100/(countDetect[0]+countDetect[1])) + '''</td></tr>
+    </table>
+    '''
     print("--------------Count Anomaly VS Normal-------------")
     print("-------------- List Destination Country with Prediction -------------")
     # print(type(df_categories.value_counts()))
     # print(type(df_categories))
+    htmlItem = ""
     for index, value in df_categories.value_counts().items():
         encode = countryMap[index[0]]
         predictData = lof_detector.predict([[ encode ]])
         print(index[0]  , " | code =" , encode , " | count ="  , value , " | result =" , dataPredictionToString(predictData[0]))
-
+        htmlItem = htmlItem + "<tr><td>" + index[0] + "</td><td class=right-aligned>" + str(encode) + "</td><td class=right-aligned>" + str(value)+ "</td><td>" + dataPredictionToString(predictData[0]) + "</td><tr>"
+    
+    htmlCountryPrediction = '''
+    <table class="table table-striped">
+        <th>Country</th><th class=right-aligned>CODE</th><th class=right-aligned>Amount</th><th>Prediction</th>
+        ''' + htmlItem + '''
+    </table>
+    '''
     print("-------------- List Destination Country with Prediction -------------")
     
     plt.figure(figsize=(7,7))
@@ -102,6 +118,7 @@ if __name__ == "__main__":
     plt.savefig('images/train-ads-anomaly-dest-country.png')
     plt.show()
 
+    print("-------------- Machine Learning - Confusion Matrix -------------")
     Accuracy = metrics.accuracy_score(X_Test, lof_detect)
     print("Accuracy : " , Accuracy)
     Precision = metrics.precision_score(X_Test, lof_detect)
@@ -113,42 +130,47 @@ if __name__ == "__main__":
     F1_score = metrics.f1_score(X_Test, lof_detect)
     print("F1_score : " , F1_score)
 
+    htmlMatrix = '''
+    <table class="table table-striped">
+        <th>Type</th><th>Meaning</th><th class=right-aligned>Score</th>
+        <tr><td>Accuracy</td><td>The proportion of correctly predicted cases</td><td class=right-aligned>''' + str(Accuracy) + '''</td></tr>
+        <tr><td>Precision</td><td>Positive Predictive Value</td><td class=right-aligned>''' + str(Precision) + '''</td></tr>
+        <tr><td>Sensitivity_recall</td><td> True Positive Rate</td><td class=right-aligned>''' + str(Sensitivity_recall) + '''</td></tr>
+        <tr><td>Specificity</td><td>True Negative Rate</td><td class=right-aligned>''' + str(Specificity) + '''</td></tr>
+        <tr><td>F1_score</td><td>Balances precision and recall</td><td class=right-aligned>''' + str(F1_score) + '''</td></tr>    
+    </table>
+    '''
+    print("-------------- Machine Learning - Confusion Matrix -------------")
+
+
     confusion_matrix = metrics.confusion_matrix(X_Test, lof_detect)
     cm_display = metrics.ConfusionMatrixDisplay(confusion_matrix = confusion_matrix, display_labels = ["Anomally", "Normally"])
     cm_display.plot()
     plt.savefig('images/train-ads-anomaly-dest-country-confusion-matrix.png')
     plt.show()
-    
-    summary_table_1 = X.describe().to_html()\
-    .replace('<table border="1" class="dataframe">','<table class="table table-striped">') # use bootstrap styling
-    print(summary_table_1)
 
-    summary_table_2 = '''<table class="table table-striped">
-    <th>Ticker</th>
+    summary_table = '''
+    <p>Count Record : ''' + str(df_categories.shape[0]) + '''</p>
+    <h2>Local Outlier Factor (LOF)</h2>
+    <p>n_neighbors : ''' + str(setNNeighbors) + '''</p>
+    ''' + htmlAnomalyVSNormally + '''
+    ''' + htmlCountryPrediction + '''
+    <table class="table table-striped">
+    <th>Local Outlier Factor (LOF)</th>
     <tr>
         <td><img src="train-ads-anomaly-dest-country.png" alt="train-ads-anomaly-dest-country.png"></td>
     </tr>
+        </table>
+    <table class="table table-striped">
+    <th>confusion-matrix</th>
     <tr>
         <td><img src="train-ads-anomaly-dest-country-confusion-matrix.png" alt="confusion-matrix"></td>
     </tr>
     </table>
+    ''' + htmlMatrix + '''
     '''
-    print(summary_table_2)
 
-    html_string = '''
-    <html>
-        <head>
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-            <style>body{ margin:0 100; background:whitesmoke; }</style>
-        </head>
-        <body>
-            <h1></h1>
-            <!-- *** Section 1 *** --->
-            <h2>train-ads-anomaly-dest-country</h2>
-            ''' + summary_table_2 + '''
-            ''' + summary_table_1 + '''
-        </body>
-    </html>'''    
+    html_string = mainReportHTML("train-ads-anomaly-dest-country",summary_table)   
 
     f = open('report.html','w')
     f.write(html_string)
