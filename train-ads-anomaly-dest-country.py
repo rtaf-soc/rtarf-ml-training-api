@@ -63,8 +63,9 @@ if __name__ == "__main__":
     X = df_categories.replace({'ads_country_dst': countryMap})
     print("Frequency encoding done")
     
-    X_Test = X.mask(X <= 20, 1)
-    X_Test.mask(X_Test > 20, -1,inplace=True)
+    normalPoint = 30
+    X_Test = X.mask(X <= normalPoint, 1)
+    X_Test.mask(X_Test > normalPoint, -1,inplace=True)
     
     # Call and fit the Local Outlier Factor detector
     setNNeighbors = int((df_categories.shape[0]/300)) #This is best scenario but memory 64GB still OMM killed
