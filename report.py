@@ -11,12 +11,21 @@ def mainReportHTML(title,summary_table):
                 text-align: right;
                 padding-right: 10px; /* เพิ่มระยะห่างด้านขวาเพื่อให้มีพื้นที่ว่างก่อนเครื่องหมายจุล */
             }
+            footer {
+                text-align: center;
+                background-color: #000000;
+                color: #fff;
+                padding: 10px;
+            }
         </style>
     </head>
     <body>
         <h1>Report</h1>
         <h2>''' + title + '''</h2>
         ''' + summary_table + '''
+        <footer>
+            <p>&copy; 2023 Machine Learning</p>
+        </footer>
     </body>
 </html>'''
 
