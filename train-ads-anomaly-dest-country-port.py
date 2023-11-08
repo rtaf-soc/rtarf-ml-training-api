@@ -199,7 +199,7 @@ if __name__ == "__main__":
     tracking_uri = os.environ["MLFLOW_TRACKING_URI"]
     # export MLFLOW_TRACKING_USERNAME=user 
     # export MLFLOW_TRACKING_PASSWORD=pwd
-    experiment = mlflow.set_experiment(experiment_name='ads-anomaly-dest-country')
+    experiment = mlflow.set_experiment(experiment_name='ads-anomaly-dest-country-port')
     experiment_id = experiment.experiment_id
 
     reportURL = "https://minio-api.rtarf-ml.its-software-services.com/ml-report/train-ads-anomaly-dest-country-port/" + jenkinsBuildID + "/report.html"
