@@ -22,10 +22,10 @@ pipeline
                 {
                     container("python") 
                     {
-                        sh "pwd"            
                         sh "df -h"            
                         sh "python --version"            
-                        sh "pip install -r requirements.txt"                                                                              
+                        sh "pip install -r requirements.txt"
+                        sh "df -h"                                                                             
                     }
                 }
             }
@@ -67,6 +67,7 @@ pipeline
                             cmd = "ls ./rawdata/ | wc -l"
                             countFile = sh(script: cmd, returnStdout: true)
                             println("countFile: ${countFile}")
+                            sh "df -h"
                             currentBuild.description = "folder:${MLFLOW_MINIO_FOLDER}/${MLFLOW_TRAINING_FILE_LIMIT}/${countFile}"
                         }                                                                            
                     }
