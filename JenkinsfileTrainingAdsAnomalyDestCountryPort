@@ -22,6 +22,8 @@ pipeline
                 {
                     container("python") 
                     {
+                        sh "pwd"            
+                        sh "df -h"            
                         sh "python --version"            
                         sh "pip install -r requirements.txt"                                                                              
                     }
