@@ -82,7 +82,9 @@ pipeline
                 {
                     container("python") 
                     {
+                        sh "df -h"
                         sh "python -u train-ads-anomaly-dest-country-port.py ${env.BUILD_URL}console ${MLFLOW_MINIO_FOLDER} ${MLFLOW_TRAINING_FILE_LIMIT} ${env.BUILD_ID}"
+                        sh "df -h"
                     }
                     container("minio-mc") 
                     {
