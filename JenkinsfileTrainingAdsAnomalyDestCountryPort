@@ -110,6 +110,9 @@ pipeline
             {
                 script
                 {
+                    sh 'docker images'
+                    sh 'docker system prune -f'
+                    sh 'docker images'                    
                     deleteFolder("${env.WORKSPACE}@libs")
                     deleteFolder("${env.WORKSPACE}@script")
                     deleteFolder("${env.WORKSPACE}@script@tmp")
