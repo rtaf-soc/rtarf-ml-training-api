@@ -106,13 +106,23 @@ pipeline
     {
         always
         {
-            node('master')
+            node('jenkins-production-jenkins-agent')
             {
                 script
                 {
-                    sh 'docker images'
-                    sh 'docker system prune -f'
-                    sh 'docker images'                    
+                    container("dind") 
+                    {
+                        sh 'docker images'
+                        sh 'docker system prune -f'
+                        sh 'docker images' 
+                    }
+                }
+            }
+
+            node('master')
+            {
+                script
+                {    
                     deleteFolder("${env.WORKSPACE}@libs")
                     deleteFolder("${env.WORKSPACE}@script")
                     deleteFolder("${env.WORKSPACE}@script@tmp")
