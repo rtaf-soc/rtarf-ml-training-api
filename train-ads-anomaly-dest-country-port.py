@@ -42,7 +42,7 @@ if __name__ == "__main__":
     np.set_printoptions(threshold=sys.maxsize)
 
     # df_categories = df[df["ads_country_dst"].str.startswith(('1', '2', '3', '4', '5', '6', '7', '8', '9', '0')) == False] 
-    df_categories = pd.concat([df_categories["ads_country_dst"]], axis=1, sort=False,)
+    df_categories = pd.concat([df["ads_country_dst"]], axis=1, sort=False,)
     print("-------------- Count Record --------------")
     print(df_categories.shape[0])
     print("-------------- Count Record --------------")
