@@ -125,6 +125,7 @@ pipeline
             {
                 script
                 {    
+                    sh "df -h"
                     deleteFolder("${env.WORKSPACE}@libs")
                     deleteFolder("${env.WORKSPACE}@script")
                     deleteFolder("${env.WORKSPACE}@script@tmp")
