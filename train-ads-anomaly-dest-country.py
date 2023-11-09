@@ -179,6 +179,7 @@ if __name__ == "__main__":
     f.close()
 
     tracking_uri = os.environ["MLFLOW_TRACKING_URI"]
+    os.environ['MLFLOW_HTTP_REQUEST_TIMEOUT'] = '5000'
     # export MLFLOW_TRACKING_USERNAME=user 
     # export MLFLOW_TRACKING_PASSWORD=pwd
     experiment = mlflow.set_experiment(experiment_name='ads-anomaly-dest-country')
