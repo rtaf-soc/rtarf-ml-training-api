@@ -200,6 +200,8 @@ Report: [{reportURL}]({reportURL})
         print("Artifact Location: {}".format(experiment.artifact_location))
         print("artifact uri : " + mlflow.get_artifact_uri())
 
+        mlflow.environment_variables.MLFLOW_ARTIFACT_UPLOAD_DOWNLOAD_TIMEOUT="5000"
+        
         mlflow.doctor()
         
         mlflowMinioFolder
