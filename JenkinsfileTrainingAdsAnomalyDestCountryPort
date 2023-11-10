@@ -22,10 +22,8 @@ pipeline
                 {
                     container("python") 
                     {
-                        sh "df -h"            
                         sh "python --version"            
-                        sh "pip install -r requirements.txt"
-                        sh "df -h"                                                                             
+                        sh "pip install -r requirements.txt"                                                                                                 
                     }
                 }
             }
@@ -67,7 +65,6 @@ pipeline
                             cmd = "ls ./rawdata/ | wc -l"
                             countFile = sh(script: cmd, returnStdout: true)
                             println("countFile: ${countFile}")
-                            sh "df -h"
                             currentBuild.description = "folder:${MLFLOW_MINIO_FOLDER}/${MLFLOW_TRAINING_FILE_LIMIT}/${countFile}"
                         }                                                                            
                     }
@@ -82,9 +79,7 @@ pipeline
                 {
                     container("python") 
                     {
-                        sh "df -h"
                         sh "python -u train-ads-anomaly-dest-country-port.py ${env.BUILD_URL}console ${MLFLOW_MINIO_FOLDER} ${MLFLOW_TRAINING_FILE_LIMIT} ${env.BUILD_ID}"
-                        sh "df -h"
                     }
                     container("minio-mc") 
                     {
@@ -125,7 +120,6 @@ pipeline
             {
                 script
                 {    
-                    sh "df -h"
                     deleteFolder("${env.WORKSPACE}@libs")
                     deleteFolder("${env.WORKSPACE}@script")
                     deleteFolder("${env.WORKSPACE}@script@tmp")
