@@ -179,7 +179,7 @@ if __name__ == "__main__":
     f.close()
 
     tracking_uri = os.environ["MLFLOW_TRACKING_URI"]
-    os.environ['MLFLOW_HTTP_REQUEST_TIMEOUT'] = '5000'
+    os.environ['MLFLOW_HTTP_REQUEST_TIMEOUT'] = '6000'
     # export MLFLOW_TRACKING_USERNAME=user 
     # export MLFLOW_TRACKING_PASSWORD=pwd
     experiment = mlflow.set_experiment(experiment_name='ads-anomaly-dest-country')
@@ -193,6 +193,8 @@ if __name__ == "__main__":
 Jenkins URL: [{jenkinsURL}]({jenkinsURL})
 Report: [{reportURL}]({reportURL})
     """
+    mlflow.environment_variables.MLFLOW_ARTIFACT_UPLOAD_DOWNLOAD_TIMEOUT='6000'
+    mlflow.environment_variables.MLFLOW_HTTP_REQUEST_TIMEOUT='6000'
 
     with mlflow.start_run(experiment_id=experiment_id,description=run_description):
         mlflow.set_tracking_uri(tracking_uri)
@@ -200,8 +202,8 @@ Report: [{reportURL}]({reportURL})
         print("Artifact Location: {}".format(experiment.artifact_location))
         print("artifact uri : " + mlflow.get_artifact_uri())
 
-        mlflow.environment_variables.MLFLOW_ARTIFACT_UPLOAD_DOWNLOAD_TIMEOUT="5000"
-        
+        mlflow.environment_variables.MLFLOW_ARTIFACT_UPLOAD_DOWNLOAD_TIMEOUT='6000'
+        mlflow.environment_variables.MLFLOW_HTTP_REQUEST_TIMEOUT='6000'
         mlflow.doctor()
         
         mlflowMinioFolder
@@ -214,5 +216,5 @@ Report: [{reportURL}]({reportURL})
         # mlflow.set_tag("JenkinsURL",jenkinsURL)
         mlflow.log_metric("Anomaly", str((countDetect[0])*100/(countDetect[0]+countDetect[1])))
         mlflow.log_metric("Normally", str((countDetect[1])*100/(countDetect[0]+countDetect[1])))
-        mlflow.sklearn.log_model(lof_detector, "model", registered_model_name="ads-anomaly-by-dest-country")
+        mlflow.sklearn.log_model(lof_detector, "model", registered_model_name="ads-anomaly-by-dest-country",await_registration_for="6000")
         print("Model saved in run %s" % mlflow.active_run().info.run_uuid)
