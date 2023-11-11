@@ -193,8 +193,10 @@ if __name__ == "__main__":
 Jenkins URL: [{jenkinsURL}]({jenkinsURL})
 Report: [{reportURL}]({reportURL})
     """
-    mlflow.environment_variables.MLFLOW_ARTIFACT_UPLOAD_DOWNLOAD_TIMEOUT='6000'
-    mlflow.environment_variables.MLFLOW_HTTP_REQUEST_TIMEOUT='6000'
+    # mlflow.environment_variables.MLFLOW_ARTIFACT_UPLOAD_DOWNLOAD_TIMEOUT='6000'
+    # mlflow.environment_variables.MLFLOW_HTTP_REQUEST_TIMEOUT='6000'
+
+    # urllib3.util.retry.Retry(total=10, backoff_factor=0.1, status_forcelist=[ 500, 502, 503, 504 ])
 
     with mlflow.start_run(experiment_id=experiment_id,description=run_description):
         mlflow.set_tracking_uri(tracking_uri)
