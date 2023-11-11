@@ -78,7 +78,7 @@ if __name__ == "__main__":
     X_Test.loc[mask, 'test'] = 1
     
     # Call and fit the Local Outlier Factor detector
-    setNNeighbors = int((df_categories.shape[0]/300)) #This is best scenario but memory 64GB still OMM killed
+    setNNeighbors = int((df_categories.shape[0]/300)) # /30 This is best scenario but memory 64GB still OMM killed
     print("set n_neighbors : " , setNNeighbors)
     lof_detector = LocalOutlierFactor(n_neighbors=setNNeighbors, contamination=0.1,novelty=True).fit(X.values)
     print("-------------- Model Size (MB) --------------")

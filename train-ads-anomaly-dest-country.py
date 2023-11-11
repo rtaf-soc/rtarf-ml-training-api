@@ -41,8 +41,8 @@ if __name__ == "__main__":
     
     np.set_printoptions(threshold=sys.maxsize)
 
-    df_categories = df[df["ads_country_dst"].str.startswith(('1', '2', '3', '4', '5', '6', '7', '8', '9', '0')) == False] 
-    df_categories = pd.concat([df_categories["ads_country_dst"]], axis=1, sort=False,)
+    # df_categories = df[df["ads_country_dst"].str.startswith(('1', '2', '3', '4', '5', '6', '7', '8', '9', '0')) == False] 
+    df_categories = pd.concat([df["ads_country_dst"]], axis=1, sort=False,)
     print("-------------- Count Record --------------")
     print(df_categories.shape[0])
     print("-------------- Count Record --------------")
@@ -69,7 +69,7 @@ if __name__ == "__main__":
     X_Test.mask(X_Test > normalPoint, -1,inplace=True)
     
     # Call and fit the Local Outlier Factor detector
-    setNNeighbors = int((df_categories.shape[0]/300)) #This is best scenario but memory 64GB still OMM killed
+    setNNeighbors = int((df_categories.shape[0]/300)) # /30 This is best scenario but memory 64GB still OMM killed
     print("set n_neighbors : " , setNNeighbors)
     lof_detector = LocalOutlierFactor(n_neighbors=setNNeighbors, contamination=0.1,novelty=True).fit(X.values)
     print("-------------- Model Size (MB) --------------")
