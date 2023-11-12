@@ -13,6 +13,7 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import OrdinalEncoder
 
 from sharelib import *
+from report import *
 import logging
 from pathlib import Path
 import json
