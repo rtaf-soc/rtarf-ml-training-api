@@ -3,7 +3,7 @@ import pandas as pd
 import os
 import matplotlib.pyplot as plt
 from sklearn.neighbors import LocalOutlierFactor
-
+from sklearn import metrics
 ########### mflow ############
 import mlflow
 import mlflow.sklearn
@@ -26,6 +26,7 @@ logger = logging.getLogger(__name__)
 jenkinsURL = getArgs(1,"")
 mlflowMinioFolder = getArgs(2,"")
 mlflowTrainingFileLimit = int(getArgs(3,10))
+jenkinsBuildID = getArgs(4,"")
 
 # print(mlflowTrainingFileLimit)
 
@@ -46,7 +47,7 @@ if __name__ == "__main__":
             break
     
 
-        np.set_printoptions(threshold=sys.maxsize)
+    np.set_printoptions(threshold=sys.maxsize)
     
     df_categories = pd.concat([df["ads_ts_hh"]], axis=1, sort=False,)
     print("-------------- Count Record --------------")
@@ -57,6 +58,10 @@ if __name__ == "__main__":
     print("-------------- Count HH --------------")
 
     X = df_categories
+
+    X_Test = X.mask((X >= 8) & (X <= 16), 99)
+    X_Test.mask(X_Test < 99, -1,inplace=True)
+    X_Test.mask(X_Test == 99, 1,inplace=True)
 
     # Call and fit the Local Outlier Factor detector
     lof_detector = LocalOutlierFactor(n_neighbors=int((df_categories.shape[0]/3)), contamination=0.1,novelty=True).fit(X.values)
@@ -79,26 +84,97 @@ if __name__ == "__main__":
     print("Anomaly = " , countDetect[0] , "record with " , (countDetect[0])*100/(countDetect[0]+countDetect[1]) ," %")
     print("Normal  = " , countDetect[1] , "record with " , (countDetect[1])*100/(countDetect[0]+countDetect[1]) ," %")
     print("--------------Count Anomaly VS Normal-------------")
-    # print(lof_detect)
+    htmlAnomalyVSNormally = '''
+    <table class="table table-striped">
+        <th>Type</th><th class=right-aligned>Record</th><th class=right-aligned>%Record</th>
+        <tr><td>Anomaly</td><td class=right-aligned>''' + str(countDetect[0]) + '''</td><td class=right-aligned> ''' + str((countDetect[0])*100/(countDetect[0]+countDetect[1])) + '''</td></tr>
+        <tr><td>Normal</td><td class=right-aligned>''' + str(countDetect[1]) + '''</td><td class=right-aligned> ''' + str((countDetect[1])*100/(countDetect[0]+countDetect[1])) + '''</td></tr>
+    </table>
+    '''
 
     # np.set_printoptions(formatter={'float_kind':'{:f}'.format})
     # print(np.unique(lof_detector.negative_outlier_factor_, return_counts=True))
     # print(lof_detector.negative_outlier_factor_)
 
     print("-------------- List HH with Prediction -------------")
+    htmlItem = ""
     for index, value in df_categories.value_counts().items():
         tempdf = pd.DataFrame([
             [index[0]]
         ], columns=['ads_ts_hh'])
         predictData = lof_detector.predict(tempdf)
         print(index[0]  , " | count ="  , value , " | result =" , dataPredictionToString(predictData[0]))
+        htmlItem = htmlItem + "<tr><td>" + str(index[0]) + "</td><td class=right-aligned>" + str(value)+ "</td><td>" + dataPredictionToString(predictData[0]) + "</td><tr>"
 
     print("-------------- List HH with Prediction -------------")
 
-    plt.figure(figsize=(20,20))
+    htmlCountryPrediction = '''
+    <table class="table table-striped">
+        <th>HH</th><th class=right-aligned>Amount</th><th>Prediction</th>
+        ''' + htmlItem + '''
+    </table>
+    '''
+
+    plt.figure(figsize=(7,7))
     plt.scatter(X.to_numpy()[:, 0], X.to_numpy()[:, 0], c=lof_detect, cmap="flag", alpha=0.5)
-    plt.title("LocalOutlierFactor")
+    plt.title("train-ads-anomaly-time")
+    plt.savefig('images/train-ads-anomaly-time.png')
     plt.show()
+
+    print("-------------- Machine Learning - Confusion Matrix -------------")
+    Accuracy = metrics.accuracy_score(X_Test, lof_detect)
+    print("Accuracy : " , Accuracy)
+    Precision = metrics.precision_score(X_Test, lof_detect)
+    print("Precision : " , Precision)
+    Sensitivity_recall = metrics.recall_score(X_Test, lof_detect)
+    print("Sensitivity_recall : " , Sensitivity_recall)
+    Specificity = metrics.recall_score(X_Test, lof_detect, pos_label=-1)
+    print("Specificity : " , Specificity)
+    F1_score = metrics.f1_score(X_Test, lof_detect)
+    print("F1_score : " , F1_score)
+    print("-------------- Machine Learning - Confusion Matrix -------------")
+
+    htmlMatrix = '''
+    <table class="table table-striped">
+        <th>Type</th><th>Meaning</th><th class=right-aligned>Score</th>
+        <tr><td>Accuracy</td><td>The proportion of correctly predicted cases</td><td class=right-aligned>''' + str(Accuracy) + '''</td></tr>
+        <tr><td>Precision</td><td>Positive Predictive Value</td><td class=right-aligned>''' + str(Precision) + '''</td></tr>
+        <tr><td>Sensitivity_recall</td><td> True Positive Rate</td><td class=right-aligned>''' + str(Sensitivity_recall) + '''</td></tr>
+        <tr><td>Specificity</td><td>True Negative Rate</td><td class=right-aligned>''' + str(Specificity) + '''</td></tr>
+        <tr><td>F1_score</td><td>Balances precision and recall</td><td class=right-aligned>''' + str(F1_score) + '''</td></tr>    
+    </table>
+    '''
+    confusion_matrix = metrics.confusion_matrix(X_Test, lof_detect)
+    cm_display = metrics.ConfusionMatrixDisplay(confusion_matrix = confusion_matrix, display_labels = ["Anomally", "Normally"])
+    cm_display.plot()
+    plt.savefig('images/train-ads-anomaly-time-confusion-matrix.png')
+    plt.show()
+
+    summary_table = '''
+    <p>Count Record : ''' + str(df_categories.shape[0]) + '''</p>
+    <h2>Local Outlier Factor (LOF)</h2>
+    <p>n_neighbors : ''' + str(setNNeighbors) + '''</p>
+    ''' + htmlAnomalyVSNormally + '''
+    ''' + htmlCountryPrediction + '''
+    <table class="table table-striped">
+    <th>Local Outlier Factor (LOF)</th>
+    <tr>
+        <td><img src="train-ads-anomaly-dest-country-port-port.png" alt="train-ads-anomaly-dest-country-port.png"></td>
+    </tr>
+        </table>
+    <table class="table table-striped">
+    <th>confusion-matrix</th>
+    <tr>
+        <td><img src="train-ads-anomaly-dest-country-port-confusion-matrix.png" alt="confusion-matrix"></td>
+    </tr>
+    </table>
+    ''' + htmlMatrix + '''
+    '''
+
+    html_string = mainReportHTML("train-ads-anomaly-time",summary_table)
+    f = open('report.html','w')
+    f.write(html_string)
+    f.close()
 
     tracking_uri = os.environ["MLFLOW_TRACKING_URI"]
     # export MLFLOW_TRACKING_USERNAME=user 
