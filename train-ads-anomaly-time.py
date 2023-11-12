@@ -162,13 +162,13 @@ if __name__ == "__main__":
     <table class="table table-striped">
     <th>Local Outlier Factor (LOF)</th>
     <tr>
-        <td><img src="train-ads-anomaly-dest-country-port-port.png" alt="train-ads-anomaly-dest-country-port.png"></td>
+        <td><img src="train-ads-anomaly-time.png" alt="train-ads-anomaly-time.png"></td>
     </tr>
         </table>
     <table class="table table-striped">
     <th>confusion-matrix</th>
     <tr>
-        <td><img src="train-ads-anomaly-dest-country-port-confusion-matrix.png" alt="confusion-matrix"></td>
+        <td><img src="train-ads-anomaly-time-confusion-matrix.png" alt="confusion-matrix"></td>
     </tr>
     </table>
     ''' + htmlMatrix + '''
