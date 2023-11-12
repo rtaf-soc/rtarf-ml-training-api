@@ -59,7 +59,7 @@ if __name__ == "__main__":
 
     X = df_categories
 
-    X_Test = X.mask((X >= 8) & (X <= 16), 99)
+    X_Test = X.mask((X >= 6) & (X <= 18), 99)
     X_Test.mask(X_Test < 99, -1,inplace=True)
     X_Test.mask(X_Test == 99, 1,inplace=True)
 
