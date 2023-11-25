@@ -180,8 +180,6 @@ if __name__ == "__main__":
 
     tracking_uri = os.environ["MLFLOW_TRACKING_URI"]
     os.environ['MLFLOW_HTTP_REQUEST_TIMEOUT'] = '6000'
-    MLFLOW_TRACKING_USERNAME = os.environ['MLFLOW_TRACKING_USERNAME']
-    MLFLOW_TRACKING_PASSWORD = os.environ['MLFLOW_TRACKING_PASSWORD']
     # export MLFLOW_TRACKING_USERNAME=user 
     # export MLFLOW_TRACKING_PASSWORD=pwd
 
