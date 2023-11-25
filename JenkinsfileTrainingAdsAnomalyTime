@@ -11,6 +11,11 @@ pipeline
         }       
     }
 
+    environment {
+        MLFLOW_TRACKING_USERNAME = credentials('MLFLOW_USER')
+        MLFLOW_TRACKING_PASSWORD = credentials('MLFLOW_PASSWORD')
+    }
+    
     stages
     {
         

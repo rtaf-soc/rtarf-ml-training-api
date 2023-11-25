@@ -180,6 +180,8 @@ if __name__ == "__main__":
     f.close()
 
     tracking_uri = os.environ["MLFLOW_TRACKING_URI"]
+    MLFLOW_TRACKING_USERNAME = os.environ['MLFLOW_TRACKING_USERNAME']
+    MLFLOW_TRACKING_PASSWORD = os.environ['MLFLOW_TRACKING_PASSWORD']
     # export MLFLOW_TRACKING_USERNAME=user 
     # export MLFLOW_TRACKING_PASSWORD=pwd
 
