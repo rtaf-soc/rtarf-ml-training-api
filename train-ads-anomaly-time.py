@@ -186,10 +186,13 @@ if __name__ == "__main__":
     experiment = mlflow.set_experiment(experiment_name='ads-anomaly-time')
     experiment_id = experiment.experiment_id
 
+    reportURL = "https://minio-api.rtarf-ml.its-software-services.com/ml-report/train-ads-anomaly-time/" + jenkinsBuildID + "/report.html"
+
     run_description = f"""
 ### Note
 **All information** * about Training * ~~ML here~~
 Jenkins URL: [{jenkinsURL}]({jenkinsURL})
+Report: [{reportURL}]({reportURL})
     """
 
     with mlflow.start_run(experiment_id=experiment_id,description=run_description):
