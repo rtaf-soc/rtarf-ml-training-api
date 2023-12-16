@@ -64,6 +64,8 @@ if __name__ == "__main__":
     X_Test.mask(X_Test < 99, -1,inplace=True)
     X_Test.mask(X_Test == 99, 1,inplace=True)
 
+    X_Count = X.replace({'ads_ts_hh': X.value_counts().to_dict()})
+    
     # Call and fit the Local Outlier Factor detector
     setNNeighbors = int((df_categories.shape[0]/3)) # /3 This is best scenario but memory 64GB still OMM killed
     print("set n_neighbors : " , setNNeighbors)
@@ -119,7 +121,7 @@ if __name__ == "__main__":
     '''
 
     plt.figure(figsize=(7,7))
-    plt.scatter(X.to_numpy()[:, 0], X.to_numpy()[:, 0], c=lof_detect, cmap="flag", alpha=0.5)
+    plt.scatter(X.to_numpy()[:, 0], X_Count.to_numpy()[:, 0], c=lof_detect, cmap="flag", alpha=0.5)
     plt.title("train-ads-anomaly-time")
     plt.savefig('images/train-ads-anomaly-time.png')
     plt.show()
